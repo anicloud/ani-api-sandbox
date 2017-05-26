@@ -3,7 +3,9 @@ package com.ani.sunny.test.core.service.impl;
 import com.ani.agent.service.commons.oauth.dto.AniOAuthAccessToken;
 import com.ani.agent.service.service.AgentTemplate;
 import com.ani.bus.service.commons.dto.anidevice.DeviceMasterObjInfoDto;
+import com.ani.bus.service.commons.dto.anidevice.DeviceSlaveObjInfoDto;
 import com.ani.earth.commons.dto.AccountDto;
+import com.ani.sunny.test.commons.dto.device.DeviceMasterFormDto;
 import com.ani.sunny.test.commons.dto.user.UserDto;
 import com.ani.sunny.test.core.service.facade.ApplicationInitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,15 @@ public class ApplicationInitServiceImpl implements ApplicationInitService {
                 .getAccountService(accessToken.getAccessToken())
                 .getByAccessToken();
         UserDto userDto = fetchUserInfo(accountDto, accessToken);
+        //获取msater列表
         List<DeviceMasterObjInfoDto> deviceMasterObjInfoDtoList = agentTemplate
                 .getDeviceObjService(accessToken.getAccessToken())
                 .getAccessibleDeviceObjInfoList(userDto.hashUserId, Boolean.TRUE);
+        //获取slave列表
+        for (DeviceMasterObjInfoDto deviceMasterObjInfoDto:deviceMasterObjInfoDtoList){
+                fetchDeviceMasterObjInfo(deviceMasterObjInfoDto);
+        }
+
         return userDto;
     }
     private UserDto fetchUserInfo(AccountDto accountDto, AniOAuthAccessToken accessToken) throws Exception {
@@ -40,5 +48,20 @@ public class ApplicationInitServiceImpl implements ApplicationInitService {
                 accessToken.getTokenType(),
                 System.currentTimeMillis()
         );
+    }
+    private DeviceMasterFormDto fetchDeviceMasterObjInfo(DeviceMasterObjInfoDto deviceMasterObjInfoDto){
+//        return new DeviceMasterFormDto(
+//                -1,
+//                deviceMasterObjInfoDto.objectId.intValue(),
+//                deviceMasterObjInfoDto.name,
+//                deviceMasterObjInfoDto.description,
+//                deviceMasterObjInfoDto.state,
+//                deviceMasterObjInfoDto
+//
+//
+//
+//
+//        );
+        return null;
     }
 }
