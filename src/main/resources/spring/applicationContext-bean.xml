@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+	<bean id="anicelMeta" class="com.ani.agent.service.core.config.AnicelMeta"/>
+	<bean id="restTemplateFactory" class="com.ani.agent.service.core.http.RestTemplateFactory" />
+	<bean id="agentTemplate" class="com.ani.agent.service.service.AgentTemplate">
+		<constructor-arg index="0" ref="anicelMeta"/>
+		<constructor-arg index="1" ref="restTemplateFactory"/>
+	</bean>
+</beans>
