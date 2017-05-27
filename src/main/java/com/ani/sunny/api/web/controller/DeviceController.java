@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -49,11 +50,11 @@ public class DeviceController {
         return result;
     }
     @RequestMapping("/slave/{masterId}")
-    @ResponseBody
-    public Map<String,Object> getSlaveDevices(HttpServletRequest request, @PathVariable Long masterId) {
+    public ModelAndView getSlaveDevices(HttpServletRequest request, @PathVariable Long masterId) {
         HttpSession session = request.getSession();
         String accessToken = String.valueOf(session.getAttribute(Constants.ACCESS_TOKEN_SESSION_NAME));
-        Map<String,Object> result = new HashMap<String, Object>();
+        ModelAndView modelAndView = new ModelAndView("slave");
+
         if(!StringUtils.isEmpty(accessToken)) {
             AccountDto accountDto = agentTemplate.getAccountService(accessToken).getByAccessToken();
             boolean flag = false;
@@ -61,21 +62,27 @@ public class DeviceController {
             for(DeviceMasterObjInfoDto masterObjInfoDto:Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId)) {
                 if(masterObjInfoDto.objectId.equals(masterId)) {
                     flag = true;
-                    result.put("result","success");
-                    result.put("data",masterObjInfoDto.slaves);
+//                    result.put("result","success");
+//                    result.put("data",masterObjInfoDto.slaves);
                     Constants.SLAVE_OBJ_INFO_DTO_MAP.put(accountDto.accountId+":"+masterId,masterObjInfoDto.slaves);
+
+                    modelAndView.addObject("slaves",masterObjInfoDto.slaves);
+                    modelAndView.addObject("masterId",masterObjInfoDto.objectId);
+
                     break;
                 }
             }
             if(!flag) {
-                result.put("result","error");
-                result.put("description","主设备不存在");
+                  modelAndView.addObject("massage","主设备不存在");
+//                result.put("result","error");
+//                result.put("description","主设备不存在");
             }
         } else {
-            result.put("result","error");
-            result.put("description","主设备不存在");
+//            result.put("result","error");
+//            result.put("description","主设备不存在");
+            modelAndView.addObject("massage","主设备不存在");
         }
-        return result;
+        return modelAndView;
     }
     @RequestMapping("/slave/stubs/{masterId}/{slaveId}")
     @ResponseBody
