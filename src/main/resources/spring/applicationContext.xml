@@ -22,8 +22,8 @@
 	</bean>
 
 	<!-- 扫描包 -->
-	<context:component-scan base-package="com.ani.sunny.test.core" />
-	<context:component-scan base-package="com.ani.sunny.test.infrastructure"/>
+	<context:component-scan base-package="com.ani.sunny.api.core" />
+	<context:component-scan base-package="com.ani.sunny.api.infrastructure"/>
 
 	<!-- 数据源 -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
