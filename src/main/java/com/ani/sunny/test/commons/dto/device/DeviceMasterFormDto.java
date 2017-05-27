@@ -1,5 +1,6 @@
 package com.ani.sunny.test.commons.dto.device;
 import com.ani.sunny.test.commons.dto.function.FunctionDto;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,22 +15,20 @@ public class DeviceMasterFormDto {
     private String name;
     private String description;
     private String deviceState;
-    private String deviceType;
     private List<FunctionDto> functionDtos;
     private List<DeviceSlaveFormDto> slaveDevices;
 
     public DeviceMasterFormDto() {
     }
 
-    public DeviceMasterFormDto(Long masterId, Integer slaveId, String name,String description, String deviceState, String deviceType, List<FunctionDto>functionDtos, List<DeviceSlaveFormDto> slaveDevices) {
+    public DeviceMasterFormDto(Long masterId, Integer slaveId, String name,String description, String deviceState,List<FunctionDto>functionDtos, List<DeviceSlaveFormDto> slaveDevices) {
 
         this.masterId = masterId;
         this.slaveId = slaveId;
         this.name = name;
         this.description=description;
         this.deviceState = deviceState;
-
-        this.functionDtos=functionDtos;
+        this.functionDtos=(functionDtos==null)?new ArrayList<FunctionDto>():functionDtos;
         this.slaveDevices = (slaveDevices==null)?new ArrayList<DeviceSlaveFormDto>():slaveDevices;
     }
 

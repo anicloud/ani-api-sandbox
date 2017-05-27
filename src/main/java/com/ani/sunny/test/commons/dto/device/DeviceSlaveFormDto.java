@@ -1,6 +1,9 @@
 package com.ani.sunny.test.commons.dto.device;
 
+import com.ani.sunny.test.commons.dto.function.FunctionDto;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by zhanglina on 17-5-26.
@@ -14,11 +17,11 @@ public class DeviceSlaveFormDto implements Serializable {
     private String deviceState;
     private String deviceType;
     private String deviceGroup;
-
+    private List<FunctionDto> functionDtos;
     public DeviceSlaveFormDto() {
     }
 
-    public DeviceSlaveFormDto( Long masterId, Integer slaveId, String name, String deviceState, String deviceType, String deviceGroup) {
+    public DeviceSlaveFormDto( Long masterId, Integer slaveId, String name, String deviceState, String deviceType, String deviceGroup,List<FunctionDto> functionDtos) {
 
         this.masterId = masterId;
         this.slaveId = slaveId;
@@ -26,6 +29,7 @@ public class DeviceSlaveFormDto implements Serializable {
         this.deviceState = deviceState;
         this.deviceType = deviceType;
         this.deviceGroup = deviceGroup;
+        this.functionDtos=functionDtos;
     }
 
 }
