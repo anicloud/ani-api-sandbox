@@ -1,6 +1,10 @@
 package com.ani.sunny.test.commons.dto.user;
 
+import com.ani.sunny.test.commons.dto.device.DeviceMasterFormDto;
+
 import java.io.Serializable;
+import java.util.List;
+import java.util.ListResourceBundle;
 
 /**
  * Created by zhaoyu on 15-6-12.
@@ -18,7 +22,7 @@ public class UserDto implements Serializable {
     public Long expiresIn;
     public String scope;
     public Long createTime;
-
+    public List<DeviceMasterFormDto> masterList;
     public UserDto() {
     }
 
@@ -41,7 +45,7 @@ public class UserDto implements Serializable {
     public UserDto(String accessToken, Long createTime, String email,
                    Long expiresIn, Long hashUserId,
                    String refreshToken, String scope,
-                   String screenName, String tokenType) {
+                   String screenName, String tokenType,List<DeviceMasterFormDto> masterList) {
         this.accessToken = accessToken;
         this.createTime = createTime;
         this.email = email;
@@ -51,6 +55,8 @@ public class UserDto implements Serializable {
         this.scope = scope;
         this.screenName = screenName;
         this.tokenType = tokenType;
+        this.masterList=masterList;
+
     }
 
     @Override

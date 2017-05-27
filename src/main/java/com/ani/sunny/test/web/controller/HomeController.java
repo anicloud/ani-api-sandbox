@@ -29,7 +29,9 @@ public class HomeController {
         AuthorizationCodeParameter authorizationCodeParameter = OAuth2ParameterBuilder.buildForAccessToken(Constants.appInfoDto);
         AniOAuthAccessToken oAuth2AccessToken = agentTemplate.getAniOAuthService().getOAuth2AccessToken(code, authorizationCodeParameter);
         try {
-            UserDto userDto = userDto = initService.initApplication(oAuth2AccessToken);
+            UserDto userDto = initService.initApplication(oAuth2AccessToken);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
