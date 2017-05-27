@@ -17,14 +17,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<jsp:useBean id="masters" class="com.ani.bus.service.commons.dto.anidevice.DeviceMasterObjInfoDto" scope="request" type="java.util.List"/>
+			<jsp:useBean id="masters" scope="request" type="java.util.List"/>
 			<c:forEach items="${masters}" var="obj" varStatus="status">
 				<tr>
 					<td>${obj.name}</td>
 					<td>${obj.description}</td>
-					<td>${obj.objectId}</td>
-					<td>${obj.state}</td>
-					<td><a href="${ctx}/slave/{${obj.objectId}}">查看详情</a></td>
+					<td>${obj.masterId}</td>
+					<td>${obj.deviceState}</td>
+					<td><a href="${ctx}/slave/${obj.masterId}">查看详情</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -17,7 +17,7 @@
 	<!-- prefix="/WEB-INF/jsp/", suffix=".jsp", viewname="api" -> "/WEB-INF/jsp/api.jsp" -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<!-- 前缀 -->
-		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="prefix" value="/WEB-INF/" />
 		<!-- 后缀 -->
 		<property name="suffix" value=".jsp" />
 	</bean>
