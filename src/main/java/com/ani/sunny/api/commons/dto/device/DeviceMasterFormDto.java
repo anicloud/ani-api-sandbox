@@ -32,4 +32,59 @@ public class DeviceMasterFormDto {
         this.slaveDevices = (slaveDevices==null)?new ArrayList<DeviceSlaveFormDto>():slaveDevices;
     }
 
+    public Long getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(Long masterId) {
+        this.masterId = masterId;
+    }
+
+    public Integer getSlaveId() {
+        return slaveId;
+    }
+
+    public void setSlaveId(Integer slaveId) {
+        this.slaveId = slaveId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDeviceState() {
+        return deviceState;
+    }
+
+    public void setDeviceState(String deviceState) {
+        this.deviceState = deviceState;
+    }
+
+    public List<FunctionDto> getFunctionDtos() {
+        return functionDtos;
+    }
+
+    public void setFunctionDtos(List<FunctionDto> functionDtos) {
+        this.functionDtos = functionDtos;
+    }
+
+    public List<DeviceSlaveFormDto> getSlaveDevices() {
+        return slaveDevices;
+    }
+
+    public void setSlaveDevices(List<DeviceSlaveFormDto> slaveDevices) {
+        this.slaveDevices = slaveDevices;
+    }
 }
