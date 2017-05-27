@@ -29,14 +29,8 @@ public class HomeController {
     public String redirect(HttpServletRequest request, HttpServletResponse response, @RequestParam String code) {
         AuthorizationCodeParameter authorizationCodeParameter = OAuth2ParameterBuilder.buildForAccessToken(Constants.APP_INFO_DTO);
         AniOAuthAccessToken accessToken = agentTemplate.getAniOAuthService().getOAuth2AccessToken(code, authorizationCodeParameter);
-        try {
-            UserDto userDto = initService.initApplication(accessToken);
-            HttpSession session = request.getSession();
-            session.setAttribute(Constants.ACCESS_TOKEN_SESSION_NAME,accessToken.getAccessToken());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        HttpSession session = request.getSession();
+        session.setAttribute(Constants.ACCESS_TOKEN_SESSION_NAME,accessToken.getAccessToken());
         return "";
     }
 }
