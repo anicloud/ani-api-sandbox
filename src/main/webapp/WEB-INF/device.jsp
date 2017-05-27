@@ -24,7 +24,7 @@
 					<td>${obj.description}</td>
 					<td>${obj.objectId}</td>
 					<td>${obj.state}</td>
-					<td><a href="${ctx}/slave/{${obj.objectId}}">查看详情</a></td>
+					<td><a href="${ctx}/slave/${obj.objectId}">查看详情</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

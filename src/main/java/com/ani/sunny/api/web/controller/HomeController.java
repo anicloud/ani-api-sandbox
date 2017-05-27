@@ -29,6 +29,11 @@ public class HomeController {
     private AgentTemplate agentTemplate;
     @Autowired
     private ApplicationInitService initService;
+
+    @RequestMapping(value = "/")
+    public String home() {
+        return "index";
+    }
     @RequestMapping(value ="/redirect")
     public ModelAndView redirect(HttpServletRequest request, HttpServletResponse response, @RequestParam String code) {
         AuthorizationCodeParameter authorizationCodeParameter = OAuth2ParameterBuilder.buildForAccessToken(Constants.APP_INFO_DTO);
