@@ -31,12 +31,7 @@ public class ApplicationInitServiceImpl implements ApplicationInitService {
         List<DeviceMasterObjInfoDto> deviceMasterObjInfoDtoList = agentTemplate
                 .getDeviceObjService(accessToken.getAccessToken())
                 .getAccessibleDeviceObjInfoList(userDto.hashUserId, Boolean.TRUE);
-        //获取slave列表
-        for (DeviceMasterObjInfoDto deviceMasterObjInfoDto:deviceMasterObjInfoDtoList){
-                fetchDeviceMasterObjInfo(deviceMasterObjInfoDto);
-        }
-
-        return userDto;
+               return userDto;
     }
     private UserDto fetchUserInfo(AccountDto accountDto, AniOAuthAccessToken accessToken) throws Exception {
         return new UserDto(
@@ -51,27 +46,5 @@ public class ApplicationInitServiceImpl implements ApplicationInitService {
                 System.currentTimeMillis()
         );
     }
-    private DeviceMasterFormDto fetchDeviceMasterObjInfo(DeviceMasterObjInfoDto deviceMasterObjInfoDto){
 
-//        return new DeviceMasterFormDto(
-//                -1,
-//                deviceMasterObjInfoDto.objectId.intValue(),
-//                deviceMasterObjInfoDto.name,
-//                deviceMasterObjInfoDto.description,
-//                deviceMasterObjInfoDto.state,
-//
-//
-//
-//
-//
-//        );
-        return null;
-
-    }
-    private FunctionDto fetchFunctionFromStub(){
-        return null;
-    }
-    private DeviceSlaveFormDto fetchDeviceSlaveObjInfo(DeviceSlaveObjInfoDto deviceSlaveObjInfoDto){
-        return null;
-    }
 }
