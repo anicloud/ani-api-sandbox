@@ -33,4 +33,5 @@
 
 	<!-- 处理静态资源被“/”所拦截的问题 -->
 	<mvc:default-servlet-handler />
+	<import resource="applicationContext-socket.xml"/>
 </beans>

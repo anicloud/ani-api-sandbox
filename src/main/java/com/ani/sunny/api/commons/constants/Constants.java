@@ -1,8 +1,8 @@
 package com.ani.sunny.api.commons.constants;
 
-import com.ani.agent.service.commons.oauth.dto.AniOAuthAccessToken;
 import com.ani.bus.service.commons.dto.anidevice.DeviceMasterObjInfoDto;
 import com.ani.bus.service.commons.dto.anidevice.DeviceSlaveObjInfoDto;
+import com.ani.bus.service.commons.session.AniServiceSession;
 import com.ani.octopus.commons.stub.dto.StubInfoDto;
 import com.ani.sunny.api.commons.dto.app.AppInfoDto;
 
@@ -18,4 +18,9 @@ public class Constants {
     public static Map<Long,List<DeviceMasterObjInfoDto>> DEVICE_MASTER_MAPPINGS;
     public static Map<String,List<DeviceSlaveObjInfoDto>> SLAVE_OBJ_INFO_DTO_MAP;
     public static Map<String,List<StubInfoDto>> SLAVE_STUB_MAPPINGS;
+    public static AniServiceSession ANI_SERVICE_SESSION;
+    public static Map<Long, List<Integer>> SUNNY_STUB_REGIST_MAP;
+    public final static String SUNNY_HASH_USER_ID_COOKIE = "sunnyHashUserIdCookie";
+
+    public static final String SUNNY_HASH_USER_ID_SESSION = "sunnyHashUserIdSession";
 }
