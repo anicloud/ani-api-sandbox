@@ -17,6 +17,9 @@
 			</tr>
 		</thead>
 		<tbody>
+			<script type="text/javascript">
+
+			</script>
 			<jsp:useBean id="masters" scope="request" type="java.util.List"/>
 			<c:forEach items="${masters}" var="obj" varStatus="status">
 				<tr>
@@ -24,7 +27,8 @@
 					<td>${obj.description}</td>
 					<td>${obj.masterId}</td>
 					<td>${obj.deviceState}</td>
-					<td><a href="${ctx}/slave/${obj.masterId}">查看详情</a></td>
+
+					<td><a href="${ctx}/device/slave/${obj.deviceId}">查看详情</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -19,3 +19,4 @@ hs_err_pid*
 ./**/.idea
 *.iml
 ./**/.iml
+/src/main/webapp/WEB-INF/slave.jsp

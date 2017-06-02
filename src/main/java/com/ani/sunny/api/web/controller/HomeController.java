@@ -6,6 +6,7 @@ import com.ani.agent.service.service.AgentTemplate;
 import com.ani.bus.service.commons.dto.anidevice.DeviceMasterObjInfoDto;
 import com.ani.earth.commons.dto.AccountDto;
 import com.ani.sunny.api.commons.constants.Constants;
+import com.ani.sunny.api.commons.dto.device.DeviceFormDto;
 import com.ani.sunny.api.commons.util.OAuth2ParameterBuilder;
 import com.ani.sunny.api.core.service.facade.ApplicationInitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.util.CookieGenerator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ public class HomeController {
     @Autowired
     private ApplicationInitService initService;
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/index")
     public String home() {
         return "index";
     }
@@ -49,13 +51,26 @@ public class HomeController {
         cookieGenerator.addCookie(response, String.valueOf(accountDto.accountId));
 
         ModelAndView modelAndView = new ModelAndView("device");
+        AccountDto accountDto = agentTemplate
+                .getAccountService(accessToken.getAccessToken())
+                .getByAccessToken();
+        List<DeviceFormDto> deviceFormDtos =new ArrayList<DeviceFormDto>();
         try {
             List<DeviceMasterObjInfoDto> deviceMasterObjInfoDtoList = agentTemplate
                     .getDeviceObjService(accessToken.getAccessToken())
                     .getAccessibleDeviceObjInfoList(accountDto.accountId, Boolean.TRUE);
-            modelAndView.addObject("masters",deviceMasterObjInfoDtoList);
+            if(deviceMasterObjInfoDtoList!=null && deviceMasterObjInfoDtoList.size()!=0){
+                Constants.DEVICE_MASTER_MAPPINGS.put(accountDto.accountId,deviceMasterObjInfoDtoList);
+                for (DeviceMasterObjInfoDto deviceMasterObjInfoDto:deviceMasterObjInfoDtoList){
+                    DeviceFormDto deviceFormDto=DeviceFormDto.fetchDeviceMasterObjInfoDto(deviceMasterObjInfoDto);
+                    deviceFormDtos.add(deviceFormDto);
+                }
+
+                modelAndView.addObject("masters",deviceFormDtos);
+            }
+
         } catch (Exception e) {
-            e.printStackTrace();
+            modelAndView.addObject("error","拉取设备失败");
         }
         return modelAndView;
     }
