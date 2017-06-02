@@ -49,132 +49,112 @@ public class DeviceController {
     }
     @RequestMapping("/slave/{objectId}")
     public ModelAndView getSlaveDevices(HttpServletRequest request, @PathVariable Long objectId) {
-//        HttpSession session = request.getSession();
-//        String accessToken = String.valueOf(session.getAttribute(Constants.ACCESS_TOKEN_SESSION_NAME));
-//        ModelAndView modelAndView = new ModelAndView("slave");
-//
-//        if(!StringUtils.isEmpty(accessToken)) {
-//            AccountDto accountDto = agentTemplate.getAccountService(accessToken).getByAccessToken();
-//            boolean flag = false;
-//            if(Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId) != null)
-//            for(DeviceMasterObjInfoDto masterObjInfoDto:Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId)) {
-//                Long a=masterObjInfoDto.objectId;
-//                if(a.equals(objectId)) {
-//                    flag = true;
-//                    Constants.SLAVE_OBJ_INFO_DTO_MAP.put(accountDto.accountId+":"+objectId,masterObjInfoDto.slaves);
-//                    List<DeviceSlaveObjInfoDto> deviceSlaveObjInfoDtos=masterObjInfoDto.slaves;
-//                    List<DeviceFormDto> deviceFormDtos=new ArrayList<DeviceFormDto>();
-//                    for (DeviceSlaveObjInfoDto deviceSlaveObjInfoDto:deviceSlaveObjInfoDtos){
-//                        DeviceFormDto deviceFormDto=DeviceFormDto.fetchDeviceSlavaObjInfoDto(deviceSlaveObjInfoDto);
-//                        deviceFormDtos.add(deviceFormDto);
-//                    }
-//
-//                    modelAndView.addObject("slaves",deviceFormDtos);
-//                    modelAndView.addObject("masterId",masterObjInfoDto.objectId);
-//
-//                    break;
-//                }
-//            }
-//            if(!flag) {
-//                  modelAndView.addObject("result","error");
-//                  modelAndView.addObject("massage","主设备不存在");
-//
-//            }
-//        } else {
-//            modelAndView.addObject("result","error");
-//            modelAndView.addObject("massage","主设备不存在");
-//        }
-        List<DeviceFormDto> deviceFormDtos=new ArrayList<>();
-        ModelAndView modelAndView=new ModelAndView("slave");
-        DeviceFormDto deviceFormDto=new DeviceFormDto();
-        deviceFormDto.setMasterId(objectId);
-        deviceFormDto.setDeviceId(new Long(321));
-        deviceFormDto.setDeviceState("active");
-        deviceFormDtos.add(deviceFormDto);
-        modelAndView.addObject("slaves",deviceFormDtos);
+        HttpSession session = request.getSession();
+        String accessToken = String.valueOf(session.getAttribute(Constants.ACCESS_TOKEN_SESSION_NAME));
+        ModelAndView modelAndView = new ModelAndView("slave");
+
+        if(!StringUtils.isEmpty(accessToken)) {
+            AccountDto accountDto = agentTemplate.getAccountService(accessToken).getByAccessToken();
+            boolean flag = false;
+            if(Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId) != null)
+            for(DeviceMasterObjInfoDto masterObjInfoDto:Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId)) {
+                Long a=masterObjInfoDto.objectId;
+                if(a.equals(objectId)) {
+                    flag = true;
+                    Constants.SLAVE_OBJ_INFO_DTO_MAP.put(accountDto.accountId+":"+objectId,masterObjInfoDto.slaves);
+                    List<DeviceSlaveObjInfoDto> deviceSlaveObjInfoDtos=masterObjInfoDto.slaves;
+                    List<DeviceFormDto> deviceFormDtos=new ArrayList<DeviceFormDto>();
+                    for (DeviceSlaveObjInfoDto deviceSlaveObjInfoDto:deviceSlaveObjInfoDtos){
+                        DeviceFormDto deviceFormDto=DeviceFormDto.fetchDeviceSlavaObjInfoDto(deviceSlaveObjInfoDto);
+                        deviceFormDtos.add(deviceFormDto);
+                    }
+
+                    modelAndView.addObject("slaves",deviceFormDtos);
+                    modelAndView.addObject("masterId",masterObjInfoDto.objectId);
+
+                    break;
+                }
+            }
+            if(!flag) {
+                  modelAndView.addObject("result","error");
+                  modelAndView.addObject("massage","主设备不存在");
+
+            }
+        } else {
+            modelAndView.addObject("result","error");
+            modelAndView.addObject("massage","主设备不存在");
+        }
+
         return modelAndView;
     }
     @RequestMapping("/slave/stubs/{masterId}/{slaveId}")
 
     public ModelAndView getSlaveStubs(HttpServletRequest request,@PathVariable Long masterId,@PathVariable Integer slaveId) {
-//        HttpSession session = request.getSession();
-//        String accessToken = String.valueOf(session.getAttribute(Constants.ACCESS_TOKEN_SESSION_NAME));
-//        ModelAndView result = new ModelAndView("stub");
-//        if(!StringUtils.isEmpty(accessToken)) {
-//            AccountDto accountDto = agentTemplate.getAccountService(accessToken).getByAccessToken();
-//            if(Constants.SLAVE_OBJ_INFO_DTO_MAP !=null && accountDto != null) {
-//                List<DeviceSlaveObjInfoDto> slaveObjInfoDtos = Constants.SLAVE_OBJ_INFO_DTO_MAP.get(accountDto.accountId + ":" + masterId);
-//                if (slaveObjInfoDtos != null) {
-//                    boolean flag = false;
-//                    for (DeviceSlaveObjInfoDto slaveObjInfoDto : slaveObjInfoDtos) {
-//                        if (slaveObjInfoDto.objectSlaveId.equals(slaveId)) {
-//                            flag = true;
-//                            result.addObject("result", "success");
-//                            List<StubDto> stubs=new ArrayList<StubDto>();
-//                            for (StubInfoDto stubInfoDto:slaveObjInfoDto.stubs){
-//                                StubDto stubDto=StubDto.fetchStubInfoDto(stubInfoDto);
-//                                stubs.add(stubDto);
-//                            }
-//                            result.addObject("data", stubs);
-//                            Constants.SLAVE_STUB_MAPPINGS.put(masterId + ":" + slaveId, slaveObjInfoDto.stubs);
-//                        }
-//                    }
-//                    if (!flag) {
-//
-//                        result.addObject("result", "error");
-//                        result.addObject("description", "从设备不存在");
-//                    }
-//                } else {
-//                    result.addObject("result", "error");
-//                    result.addObject("description", "对应主设备不存在");
-//                }
-//            } else {
-//                result.addObject("result","error");
-//                result.addObject("description","没找到从设备");
-//            }
-//        } else {
-//            result.addObject("result","error");
-//            result.addObject("description","用户未登陆或token过期");
-//        }
-        ModelAndView result=new ModelAndView("stub");
-        List<StubDto> stubs=new ArrayList<StubDto>();
-        StubDto stubDto=new StubDto(1,"asa",masterId,slaveId);
-        List<StubArgumentDto> stubArgumentDtos=new ArrayList<>();
-        StubArgumentDto stubArgumentDto=new StubArgumentDto("arg1");
-        StubArgumentDto stubArgumentDto1=new StubArgumentDto("arg2");
-        stubArgumentDtos.add(stubArgumentDto);
-        stubArgumentDtos.add(stubArgumentDto1);
+        HttpSession session = request.getSession();
+        String accessToken = String.valueOf(session.getAttribute(Constants.ACCESS_TOKEN_SESSION_NAME));
+        ModelAndView result = new ModelAndView("stub");
+        if(!StringUtils.isEmpty(accessToken)) {
+            AccountDto accountDto = agentTemplate.getAccountService(accessToken).getByAccessToken();
+            if(Constants.SLAVE_OBJ_INFO_DTO_MAP !=null && accountDto != null) {
+                List<DeviceSlaveObjInfoDto> slaveObjInfoDtos = Constants.SLAVE_OBJ_INFO_DTO_MAP.get(accountDto.accountId + ":" + masterId);
+                if (slaveObjInfoDtos != null) {
+                    boolean flag = false;
+                    for (DeviceSlaveObjInfoDto slaveObjInfoDto : slaveObjInfoDtos) {
+                        if (slaveObjInfoDto.objectSlaveId.equals(slaveId)) {
+                            flag = true;
+                            result.addObject("result", "success");
+                            List<StubDto> stubs=new ArrayList<StubDto>();
+                            for (StubInfoDto stubInfoDto:slaveObjInfoDto.stubs){
+                                StubDto stubDto=StubDto.fetchStubInfoDto(stubInfoDto);
+                                stubs.add(stubDto);
+                            }
+                            result.addObject("stubs", stubs);
+                            Constants.SLAVE_STUB_MAPPINGS.put(masterId + ":" + slaveId, slaveObjInfoDto.stubs);
+                        }
+                    }
+                    if (!flag) {
 
-        stubDto.setInputArguments(stubArgumentDtos);
-        //stubDto.name="stub1";
-        //stubDto.stubId=123;
-        stubs.add(stubDto);
-        result.addObject("stubs",stubs);
+                        result.addObject("result", "error");
+                        result.addObject("description", "从设备不存在");
+                    }
+                } else {
+                    result.addObject("result", "error");
+                    result.addObject("description", "对应主设备不存在");
+                }
+            } else {
+                result.addObject("result","error");
+                result.addObject("description","没找到从设备");
+            }
+        } else {
+            result.addObject("result","error");
+            result.addObject("description","用户未登陆或token过期");
+        }
+
         return result;
     }
-    @RequestMapping("/argument/{masterId}/{slaveId}/{stubId}")
-    public ModelAndView getStubArguments(HttpServletRequest request,@PathVariable Long masterId,@PathVariable Integer slaveId,@PathVariable Integer stubId) {
-        ModelAndView modelAndView=new ModelAndView("stubargument");
-        String s=request.getParameter("value");
-        String s1=request.getParameter("value");
-        List<StubInfoDto> stubInfoDtos=Constants.SLAVE_STUB_MAPPINGS.get(masterId+":"+slaveId);
-        if(stubInfoDtos!=null &&stubInfoDtos.size()!=0){
-            for (StubInfoDto stubInfoDto:stubInfoDtos){
-               // Constants.STUB_ARGUMENTS.put(stubInfoDto.stubId,stubInfoDto.inputArguments);
-                if (stubId.equals(stubInfoDto.stubId)){
-                    List<StubArgumentDto> stubArgumentDtos=StubArgumentDto.fetchStubArgumentInfoDtos(stubInfoDto.inputArguments);
-                    modelAndView.addObject("arguments",stubArgumentDtos);
-                    break;
-                }
-            }
-
-        }
-        else {
-            modelAndView.addObject("error","获取stub列表失败");
-        }
-
-
-        return modelAndView;
-    }
+//    @RequestMapping("/argument/{masterId}/{slaveId}/{stubId}")
+//    public ModelAndView getStubArguments(HttpServletRequest request,@PathVariable Long masterId,@PathVariable Integer slaveId,@PathVariable Integer stubId) {
+//        ModelAndView modelAndView=new ModelAndView("stubargument");
+//        String s=request.getParameter("value");
+//        String s1=request.getParameter("value");
+//        List<StubInfoDto> stubInfoDtos=Constants.SLAVE_STUB_MAPPINGS.get(masterId+":"+slaveId);
+//        if(stubInfoDtos!=null &&stubInfoDtos.size()!=0){
+//            for (StubInfoDto stubInfoDto:stubInfoDtos){
+//               // Constants.STUB_ARGUMENTS.put(stubInfoDto.stubId,stubInfoDto.inputArguments);
+//                if (stubId.equals(stubInfoDto.stubId)){
+//                    List<StubArgumentDto> stubArgumentDtos=StubArgumentDto.fetchStubArgumentInfoDtos(stubInfoDto.inputArguments);
+//                    modelAndView.addObject("arguments",stubArgumentDtos);
+//                    break;
+//                }
+//            }
+//
+//        }
+//        else {
+//            modelAndView.addObject("error","获取stub列表失败");
+//        }
+//
+//
+//        return modelAndView;
+//    }
 
 }

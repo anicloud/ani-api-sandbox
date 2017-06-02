@@ -23,7 +23,6 @@ public class StubArgInstance {
                 stubArgInstance.name=stubArgInstanceDto.name;
                 stubArgInstance.value=stubArgInstanceDto.value;
                 stubArgInstance.aniDataType=stubArgInstanceDto.aniDataType;
-
             }
         }
         return null;

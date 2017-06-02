@@ -1,7 +1,9 @@
 package com.ani.sunny.api.commons.dto.stub;
 
 import com.ani.bus.service.commons.dto.anistub.AniStub;
+import com.ani.octopus.commons.stub.dto.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,9 +23,16 @@ public class StubInstanceDto {
         stubInstanceDto.stubId=aniStub.stubId;
         stubInstanceDto.masterId=aniStub.targetObjectId;
         stubInstanceDto.deviceId=aniStub.targetSlaveId;
+        List<StubArgInstanceDto> list=new ArrayList<>();
+        for(com.ani.octopus.commons.stub.dto.StubArgumentDto stubArgumentDto:aniStub.inputArguments){
+            StubArgInstanceDto stubArgInstanceDto=StubArgInstanceDto.fetchStubArgumentDto(stubArgumentDto);
+            list.add(stubArgInstanceDto);
+        }
+        stubInstanceDto.inputList=list;
+        stubInstanceDto.userId=aniStub.accountId;
  //       stubInstanceDto.inputList=aniStub.inputArguments;
        // stubInstanceDto.groupId=
-        return null;
+        return stubInstanceDto;
 
     }
 

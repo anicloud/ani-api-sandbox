@@ -4,6 +4,7 @@ import com.ani.agent.service.core.validate.DomainObjectValidator;
 import com.ani.agent.service.service.websocket.ClientInvokable;
 import com.ani.bus.service.commons.dto.anistub.AniStub;
 import com.ani.octopus.commons.stub.dto.StubArgumentDto;
+import com.ani.sunny.api.commons.dto.stub.StubInstanceDto;
 
 import javax.validation.ValidationException;
 import javax.websocket.CloseReason;
@@ -21,12 +22,7 @@ public class ClientInvokerImpl implements ClientInvokable {
         if (!DomainObjectValidator.isDomainObjectValid(stub)) {
             throw new ValidationException("Invalid AniStub Instance.");
         }
-   //     int hashCode = Objects.hash(stub.stubGroupId,stub.stubId);
-//        SunnyStub sunnyStub = Constants.SUNNY_STUB_MAPPINGS.get(hashCode);
-//        if(sunnyStub != null)
-//            return sunnyStub.invokeStub(stub);
-//        else
-//            return null;
+        StubInstanceDto stubInstanceDto=StubInstanceDto.fetchAniStub(stub);
 
         return null;
     }
