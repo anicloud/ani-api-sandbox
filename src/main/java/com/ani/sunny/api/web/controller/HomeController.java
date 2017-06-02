@@ -51,9 +51,6 @@ public class HomeController {
         cookieGenerator.addCookie(response, String.valueOf(accountDto.accountId));
 
         ModelAndView modelAndView = new ModelAndView("device");
-        AccountDto accountDto = agentTemplate
-                .getAccountService(accessToken.getAccessToken())
-                .getByAccessToken();
         List<DeviceFormDto> deviceFormDtos =new ArrayList<DeviceFormDto>();
         try {
             List<DeviceMasterObjInfoDto> deviceMasterObjInfoDtoList = agentTemplate

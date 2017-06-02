@@ -17,9 +17,6 @@ import java.util.Map;
 public class Constants {
     public static String ACCESS_TOKEN_SESSION_NAME="tokenSessionName";
     public static AppInfoDto APP_INFO_DTO;
-    public static Map<Long,List<DeviceMasterObjInfoDto>> DEVICE_MASTER_MAPPINGS;
-    public static Map<String,List<DeviceSlaveObjInfoDto>> SLAVE_OBJ_INFO_DTO_MAP;
-    public static Map<String,List<StubInfoDto>> SLAVE_STUB_MAPPINGS;
     public static AniServiceSession ANI_SERVICE_SESSION;
     public static Map<Long, List<Integer>> SUNNY_STUB_REGIST_MAP;
     public final static String SUNNY_HASH_USER_ID_COOKIE = "sunnyHashUserIdCookie";
