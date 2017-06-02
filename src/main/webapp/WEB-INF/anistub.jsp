@@ -7,24 +7,28 @@
 
 <body>
 <div>
-    <table id="slave_table" width="98%" >
+    <table id="master_table" width="98%" >
         <thead>
         <tr>
             <td>设备名</td>
             <td>描述</td>
-            <td>slaveId</td>
+            <td>masterId</td>
             <td>状态</td>
         </tr>
         </thead>
         <tbody>
-        <jsp:useBean id="slaves" scope="request" type="java.util.List"/>
-        <c:forEach items="${slaves}" var="obj" varStatus="status">
+        <script type="text/javascript">
+
+        </script>
+        <jsp:useBean id="masters" scope="request" type="java.util.List"/>
+        <c:forEach items="${masters}" var="obj" varStatus="status">
             <tr>
                 <td>${obj.name}</td>
                 <td>${obj.description}</td>
-                <td>${obj.deviceId}</td>
+                <td>${obj.masterId}</td>
                 <td>${obj.deviceState}</td>
-                <td><a href="${ctx}/device/slave/stubs/${obj.masterId}/${obj.deviceId}">查看详情</a></td>
+
+                <td><a href="${ctx}/device/slave/${obj.deviceId}">查看详情</a></td>
             </tr>
         </c:forEach>
         </tbody>
@@ -36,3 +40,5 @@
 </script>
 </body>
 </html>
+
+
