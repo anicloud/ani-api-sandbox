@@ -6,9 +6,11 @@
 </head>
 
 <body>
+
 <script type="text/JavaScript">
 	window.location.href='http://localhost:8081/service-bus/oauth/authorize?client_id=1058595963104900977&redirect_uri=http://localhost:8080/sunny/redirect&response_type=code&scope=read write';
 </script>
+
 </body>
 </html>
 

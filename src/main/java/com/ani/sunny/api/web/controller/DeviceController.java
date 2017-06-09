@@ -33,26 +33,13 @@ import java.util.Map;
 public class DeviceController {
     @Autowired
     private AgentTemplate agentTemplate;
-    @RequestMapping("/master")
-    public ModelAndView getMasters(){
-        ModelAndView modelAndView=new ModelAndView("device");
-        List<DeviceFormDto> deviceFormDtos =new ArrayList<DeviceFormDto>();
-        DeviceFormDto deviceFormDto=new DeviceFormDto();
-        deviceFormDto.setName("a");
 
-        deviceFormDto.setMasterId(-1L);
-        deviceFormDto.setDeviceId(123L);
-        deviceFormDto.setDeviceState("activity");
-        deviceFormDtos.add(deviceFormDto);
-        modelAndView.addObject("masters",deviceFormDtos);
-        return modelAndView;
-    }
     @RequestMapping("/slave/{objectId}")
     public ModelAndView getSlaveDevices(HttpServletRequest request, @PathVariable Long objectId) {
         HttpSession session = request.getSession();
         String accessToken = String.valueOf(session.getAttribute(Constants.ACCESS_TOKEN_SESSION_NAME));
         ModelAndView modelAndView = new ModelAndView("slave");
-
+        List<DeviceFormDto> deviceFormDtos=new ArrayList<DeviceFormDto>();
         if(!StringUtils.isEmpty(accessToken)) {
             AccountDto accountDto = agentTemplate.getAccountService(accessToken).getByAccessToken();
             boolean flag = false;
@@ -63,28 +50,29 @@ public class DeviceController {
                     flag = true;
                     Constants.SLAVE_OBJ_INFO_DTO_MAP.put(accountDto.accountId+":"+objectId,masterObjInfoDto.slaves);
                     List<DeviceSlaveObjInfoDto> deviceSlaveObjInfoDtos=masterObjInfoDto.slaves;
-                    List<DeviceFormDto> deviceFormDtos=new ArrayList<DeviceFormDto>();
+                   // List<DeviceFormDto> deviceFormDtos=new ArrayList<DeviceFormDto>();
                     for (DeviceSlaveObjInfoDto deviceSlaveObjInfoDto:deviceSlaveObjInfoDtos){
                         DeviceFormDto deviceFormDto=DeviceFormDto.fetchDeviceSlavaObjInfoDto(deviceSlaveObjInfoDto);
+                        deviceFormDto.setMasterId(objectId);
                         deviceFormDtos.add(deviceFormDto);
                     }
 
                     modelAndView.addObject("slaves",deviceFormDtos);
-                    modelAndView.addObject("masterId",masterObjInfoDto.objectId);
-
                     break;
                 }
             }
             if(!flag) {
-                  modelAndView.addObject("result","error");
-                  modelAndView.addObject("massage","主设备不存在");
+                //为了方便前台展示这样写
+                  DeviceFormDto deviceFormDto=new DeviceFormDto();
+                  deviceFormDto.setName("主设备不存在");
+
 
             }
         } else {
-            modelAndView.addObject("result","error");
-            modelAndView.addObject("massage","主设备不存在");
+            DeviceFormDto deviceFormDto=new DeviceFormDto();
+            deviceFormDto.setName("用户未登陆或token过期");
         }
-
+        modelAndView.addObject("slaves",deviceFormDtos);
         return modelAndView;
     }
     @RequestMapping("/slave/stubs/{masterId}/{slaveId}")
@@ -93,6 +81,7 @@ public class DeviceController {
         HttpSession session = request.getSession();
         String accessToken = String.valueOf(session.getAttribute(Constants.ACCESS_TOKEN_SESSION_NAME));
         ModelAndView result = new ModelAndView("stub");
+        List<StubDto> stubs=new ArrayList<StubDto>();
         if(!StringUtils.isEmpty(accessToken)) {
             AccountDto accountDto = agentTemplate.getAccountService(accessToken).getByAccessToken();
             if(Constants.SLAVE_OBJ_INFO_DTO_MAP !=null && accountDto != null) {
@@ -102,59 +91,41 @@ public class DeviceController {
                     for (DeviceSlaveObjInfoDto slaveObjInfoDto : slaveObjInfoDtos) {
                         if (slaveObjInfoDto.objectSlaveId.equals(slaveId)) {
                             flag = true;
-                            result.addObject("result", "success");
-                            List<StubDto> stubs=new ArrayList<StubDto>();
                             for (StubInfoDto stubInfoDto:slaveObjInfoDto.stubs){
                                 StubDto stubDto=StubDto.fetchStubInfoDto(stubInfoDto);
+                                stubDto.setMasterId(masterId);
+                                stubDto.setSlaveId(slaveId);
                                 stubs.add(stubDto);
                             }
-                            result.addObject("stubs", stubs);
                             Constants.SLAVE_STUB_MAPPINGS.put(masterId + ":" + slaveId, slaveObjInfoDto.stubs);
                         }
                     }
                     if (!flag) {
 
-                        result.addObject("result", "error");
+                        StubDto stubDto=new StubDto();
+                        stubDto.setName("从设备不存在");
+                        stubs.add(stubDto);
                         result.addObject("description", "从设备不存在");
                     }
                 } else {
-                    result.addObject("result", "error");
-                    result.addObject("description", "对应主设备不存在");
+                    StubDto stubDto=new StubDto();
+                    stubDto.setName("从设备不存在");
+                    stubs.add(stubDto);
+
                 }
             } else {
-                result.addObject("result","error");
-                result.addObject("description","没找到从设备");
+                StubDto stubDto=new StubDto();
+                stubDto.setName("从设备不存在");
+                stubs.add(stubDto);
+
             }
         } else {
-            result.addObject("result","error");
-            result.addObject("description","用户未登陆或token过期");
+            StubDto stubDto=new StubDto();
+            stubDto.setName("用户未登陆或token过期");
+            stubs.add(stubDto);
         }
-
+        result.addObject("stubs",stubs);
         return result;
     }
-//    @RequestMapping("/argument/{masterId}/{slaveId}/{stubId}")
-//    public ModelAndView getStubArguments(HttpServletRequest request,@PathVariable Long masterId,@PathVariable Integer slaveId,@PathVariable Integer stubId) {
-//        ModelAndView modelAndView=new ModelAndView("stubargument");
-//        String s=request.getParameter("value");
-//        String s1=request.getParameter("value");
-//        List<StubInfoDto> stubInfoDtos=Constants.SLAVE_STUB_MAPPINGS.get(masterId+":"+slaveId);
-//        if(stubInfoDtos!=null &&stubInfoDtos.size()!=0){
-//            for (StubInfoDto stubInfoDto:stubInfoDtos){
-//               // Constants.STUB_ARGUMENTS.put(stubInfoDto.stubId,stubInfoDto.inputArguments);
-//                if (stubId.equals(stubInfoDto.stubId)){
-//                    List<StubArgumentDto> stubArgumentDtos=StubArgumentDto.fetchStubArgumentInfoDtos(stubInfoDto.inputArguments);
-//                    modelAndView.addObject("arguments",stubArgumentDtos);
-//                    break;
-//                }
-//            }
-//
-//        }
-//        else {
-//            modelAndView.addObject("error","获取stub列表失败");
-//        }
-//
-//
-//        return modelAndView;
-//    }
 
 }

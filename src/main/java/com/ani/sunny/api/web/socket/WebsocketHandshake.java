@@ -1,6 +1,7 @@
 package com.ani.sunny.api.web.socket;
 
 import com.ani.sunny.api.commons.constants.Constants;
+import com.ani.sunny.api.commons.dto.user.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,22 +24,23 @@ public class WebsocketHandshake extends HttpSessionHandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        LOG.info("before hand shake");
-        if (request instanceof ServletServerHttpRequest) {
-            ServletServerHttpRequest serverHttpRequest = (ServletServerHttpRequest) request;
-            Cookie[] cookies = serverHttpRequest.getServletRequest().getCookies();
-            String hashUserId = null;
-            for(int i=0;i<cookies.length;i++){
-                if(Constants.SUNNY_HASH_USER_ID_COOKIE.equals(cookies[i].getName())){
-                    hashUserId = cookies[i].getValue();
-                }
-            }
-            HttpSession session = serverHttpRequest.getServletRequest().getSession();
-            LOG.info("hashUserId:"+hashUserId+"session:"+session.getId());
-            if (!"".equals(hashUserId)) {
-                attributes.put("hashUserId", hashUserId);
-            }
-        }
+//        LOG.info("before hand shake");
+//        if (request instanceof ServletServerHttpRequest) {
+//            ServletServerHttpRequest serverHttpRequest = (ServletServerHttpRequest) request;
+//            Cookie[] cookies = serverHttpRequest.getServletRequest().getCookies();
+//            String hashUserId = null;
+//            for(int i=0;i<cookies.length;i++){
+//                if(Constants.SUNNY_HASH_USER_ID_COOKIE.equals(cookies[i].getName())){
+//                    hashUserId=Constants.userId.toString();
+//                   // hashUserId = cookies[i].getValue();
+//                }
+//            }
+//            HttpSession session = serverHttpRequest.getServletRequest().getSession();
+//            LOG.info("hashUserId:"+hashUserId+"session:"+session.getId());
+//            if (!"".equals(hashUserId)) {
+//                attributes.put("hashUserId", hashUserId);
+//            }
+//        }
         return super.beforeHandshake(request, response, wsHandler, attributes);
     }
 

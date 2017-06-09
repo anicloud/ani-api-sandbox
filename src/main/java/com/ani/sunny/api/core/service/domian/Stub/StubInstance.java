@@ -6,6 +6,7 @@ import com.ani.bus.service.commons.dto.anistub.AniStub;
 import com.ani.octopus.commons.message.http.Message;
 import com.ani.octopus.commons.stub.dto.StubArgumentDto;
 
+import com.ani.sunny.api.commons.constants.Constants;
 import com.ani.sunny.api.commons.constants.SunnyConstants;
 import com.ani.sunny.api.commons.dto.stub.StubInstanceDto;
 import com.ani.sunny.api.core.service.domian.Device.Device;
@@ -43,7 +44,7 @@ public class StubInstance {
                     convert(inputList)
             );
             AgentTemplate agentTemplate = (AgentTemplate) SpringContextHolder.getBean("agentTemplate");
-            AniInvokable aniInvokable = agentTemplate.getAniInvokable(SunnyConstants.aniServiceSession);
+            AniInvokable aniInvokable = agentTemplate.getAniInvokable(Constants.ANI_SERVICE_SESSION);
            // LOGGER.info("----Stub invoke :"+groupId+" "+stubId +", SystemTime is : " + System.currentTimeMillis());
             AniStub result = aniInvokable.invokeAniObjectSync(aniStub);
           //  LOGGER.info("----Stub invoke result receive, " +"SystemTime is : " + System.currentTimeMillis());

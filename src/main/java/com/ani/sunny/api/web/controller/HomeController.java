@@ -41,6 +41,7 @@ public class HomeController {
         AuthorizationCodeParameter authorizationCodeParameter = OAuth2ParameterBuilder.buildForAccessToken(Constants.APP_INFO_DTO);
         AniOAuthAccessToken accessToken = agentTemplate.getAniOAuthService().getOAuth2AccessToken(code, authorizationCodeParameter);
         AccountDto accountDto = agentTemplate.getAccountService(accessToken.getAccessToken()).getByAccessToken();
+        Constants.userId=accountDto.accountId;
         HttpSession session = request.getSession();
         session.setAttribute(Constants.SUNNY_HASH_USER_ID_SESSION,accountDto.accountId);
         session.setAttribute(Constants.ACCESS_TOKEN_SESSION_NAME,accessToken.getAccessToken());
@@ -63,12 +64,16 @@ public class HomeController {
                     deviceFormDtos.add(deviceFormDto);
                 }
 
-                modelAndView.addObject("masters",deviceFormDtos);
             }
 
         } catch (Exception e) {
-            modelAndView.addObject("error","拉取设备失败");
+            DeviceFormDto deviceFormDto=new DeviceFormDto();
+            deviceFormDto.setName("拉取设备失败");
+            deviceFormDtos.add(deviceFormDto);
+
+           // modelAndView.addObject("error","拉取设备失败");
         }
+        modelAndView.addObject("masters",deviceFormDtos);
         return modelAndView;
     }
 }

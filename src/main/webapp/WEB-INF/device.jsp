@@ -6,6 +6,43 @@
 </head>
 
 <body>
+<script>
+
+    var webSocket = null;
+    var tryTime = 0;
+    function initSocket() {
+        if (!window.WebSocket) {
+            alert("您的浏览器不支持websocket！");
+            return false;
+        }
+
+        webSocket = new WebSocket("ws://192.168.1.132:8080/sunny/websocket");
+        // 收到服务端消息
+        webSocket.onmessage = function (msg) {
+            console.log(msg);
+        };
+
+        // 异常
+        webSocket.onerror = function (event) {
+            console.log(event);
+        };
+
+        // 建立连接
+        webSocket.onopen = function (event) {
+            console.log(event);
+        };
+
+        // 断线重连
+        webSocket.onclose = function () {
+
+        };
+
+    }
+	initSocket();
+    /**
+     * 初始化websocket，建立连接
+     */
+</script>
 <div>
 	<table id="master_table" width="98%" >
 		<thead>

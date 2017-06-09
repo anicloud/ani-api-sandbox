@@ -10,7 +10,7 @@ import java.util.List;
 public class StubDto {
     private Integer stubId;
     private String name;
-    private StubGroupDto group;
+    private Long groupId;
     private List<StubArgumentDto> inputArguments;
     private List<StubArgumentDto> outputArguments;
     private Long masterId;
@@ -48,12 +48,12 @@ public class StubDto {
         this.name = name;
     }
 
-    public StubGroupDto getGroup() {
-        return group;
+    public Long getGroupId() {
+        return groupId;
     }
 
-    public void setGroup(StubGroupDto group) {
-        this.group = group;
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 
     public List<StubArgumentDto> getInputArguments() {
@@ -93,7 +93,7 @@ public class StubDto {
         StubDto stubDto=new StubDto();
         stubDto.stubId=stubInfoDto.stubId;
         stubDto.name=stubInfoDto.name;
-        stubDto.group=StubGroupDto.fetchStubGoupInfoDto(stubInfoDto.group);
+        stubDto.groupId=stubInfoDto.group.groupId;
         stubDto.inputArguments=StubArgumentDto.fetchStubArgumentInfoDtos(stubInfoDto.inputArguments);
         stubDto.privilegeType=stubInfoDto.privilegeType.toString();
         return stubDto;

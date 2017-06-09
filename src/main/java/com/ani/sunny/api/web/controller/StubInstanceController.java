@@ -30,12 +30,10 @@ public class StubInstanceController {
     @Resource
     StubInstanceService stubInstanceService;
     @RequestMapping("/invoke/{masterId}/{slaveId}/{groupId}/{stubId}")
-    public ModelAndView invokeStub(HttpServletRequest request, @PathVariable Long masterId,@PathVariable Integer slaveId,@PathVariable Long groupId,@PathVariable Long stubId){
+    public ModelAndView invokeStub(HttpServletRequest request, @PathVariable Long masterId,@PathVariable Integer slaveId,@PathVariable Long groupId,@PathVariable Integer stubId){
         ModelAndView  message =new ModelAndView("stub");
-        String s=request.getParameter("value");
-
         HttpSession session = request.getSession();
-        UserDto infoDto = (UserDto) session.getAttribute(SunnyConstants.SUNNY_SESSION_NAME);
+        Long hashUserId = (Long) session.getAttribute(Constants.SUNNY_HASH_USER_ID_SESSION);
         StubInstanceDto stubInstanceDto =null;
         List<StubInfoDto> stubInfoDtoList=Constants.SLAVE_STUB_MAPPINGS.get(masterId+":"+slaveId);
         List<StubDto> stubDtos=new ArrayList<StubDto>();
@@ -45,17 +43,20 @@ public class StubInstanceController {
                 stubInstanceDto=new StubInstanceDto();
                 stubInstanceDto.groupId=stubInfoDto.group.groupId;
                 stubInstanceDto.stubId=stubInfoDto.stubId;
-                stubInstanceDto.userId=infoDto.hashUserId;
+                stubInstanceDto.userId=hashUserId;
                 stubInstanceDto.masterId=masterId;
                 stubInstanceDto.deviceId=slaveId;
+                List<StubArgInstanceDto> stubArgInstanceDtos=new ArrayList<>();
                 int i=0;
                 for(StubArgumentInfoDto stubArgumentInfoDto:stubInfoDto.inputArguments){
                     StubArgInstanceDto stubArgInstanceDto=new StubArgInstanceDto();
                     stubArgInstanceDto.name=stubArgumentInfoDto.name;
                     stubArgInstanceDto.aniDataType=stubArgumentInfoDto.dataType;
                     stubArgInstanceDto.value=request.getParameter("value"+i);
+                    stubArgInstanceDtos.add(stubArgInstanceDto);
                     i++;
                 }
+                stubInstanceDto.inputList=stubArgInstanceDtos;
 
             }
         }
@@ -64,16 +65,23 @@ public class StubInstanceController {
                 boolean result = stubInstanceService.invokeStubInstance(stubInstanceDto);
                 if(result){
                     message.addObject("stubs",stubDtos);
-                    message.addObject("result","success");
+
                 }else {
-                    message.addObject("result","error");
-                    message.addObject("message","invoke failed");
+                    StubDto stubDto=new StubDto();
+                    stubDto.setName("invoke failed");
+                    List<StubDto> stubDtos1=new ArrayList<>();
+                    stubDtos1.add(stubDto);
+                    message.addObject("stubs",stubDtos1);
                 }
             }
 
         }catch (Exception e){
-            message.addObject("result","error");
-            message.addObject("message","param invalid");
+            StubDto stubDto=new StubDto();
+            stubDto.setName("param invalid");
+            List<StubDto> stubDtos1=new ArrayList<>();
+            stubDtos1.add(stubDto);
+            message.addObject("stubs",stubDtos1);
+
         }
 
 

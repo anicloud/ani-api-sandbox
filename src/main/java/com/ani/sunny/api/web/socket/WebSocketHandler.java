@@ -21,6 +21,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     public WebSocketHandler() {}
 
+    //ws://localhost:8080/sunny/websocket
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
@@ -44,6 +45,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         SessionManager.removeSession(hashUserId, session.getId());
         int sessionMapSize = SessionManager.getWebSocketSession(hashUserId).size();
         //向平台汇报账户状态：通知下线
+
         if(sessionMapSize <=2) {
             AccountInvoker accountInvoker = new AniInvokerImpl(Constants.ANI_SERVICE_SESSION);
             AccountObject accountObj = new AccountObject(Long.parseLong(hashUserId));
