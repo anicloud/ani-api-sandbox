@@ -11,7 +11,7 @@
              http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
              http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
                          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
-	<bean id="websocketHandler" class="com.ani.sunny.api.web.socket.WebSocketHandler"></bean>
+	<bean id="websocketHandler" class="com.ani.sunny.api.web.socket.WebSocketHandler"/>
 	<websocket:handlers allowed-origins="*">
 		<websocket:mapping path="/websocket" handler="websocketHandler"/>
 		<websocket:handshake-interceptors>
