@@ -78,18 +78,11 @@ public class ObjectNotifyImpl implements ObjectNotify{
                 String jsonData = mapper.writeValueAsString(webSocketMessage);
                 TextMessage message = new TextMessage(jsonData);
                 session.sendMessage(message);
-
             }catch (IOException e){
                 System.out.println(e);
 
             }
 
         }
-
-
-    }
-
-    public static void main(String[] args) {
-
     }
 }

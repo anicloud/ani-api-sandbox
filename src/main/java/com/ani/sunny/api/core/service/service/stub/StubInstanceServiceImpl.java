@@ -14,8 +14,8 @@ public class StubInstanceServiceImpl implements StubInstanceService {
     @Override
     public boolean invokeStubInstance(StubInstanceDto stubInstanceDto)throws Exception {
         StubInstance stubInstance= StubInstance.formDto(stubInstanceDto);
-        stubInstance.execute();
-        return false;
+
+        return  stubInstance.execute();
 
     }
 }

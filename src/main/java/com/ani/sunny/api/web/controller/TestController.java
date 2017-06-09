@@ -18,10 +18,10 @@ public class TestController {
     @RequestMapping("testMaster")
     public ModelAndView testMasterDevice() {
         ModelAndView modelAndView = new ModelAndView("device");
-        DeviceFormDto formDto = new DeviceFormDto(1L,1L,"test","","test");
-        List<DeviceFormDto> formDtos = new ArrayList<DeviceFormDto>();
-        formDtos.add(formDto);
-        modelAndView.addObject("masters",formDtos);
+//        DeviceFormDto formDto = new DeviceFormDto(1L,1L,"test","","test");
+//        List<DeviceFormDto> formDtos = new ArrayList<DeviceFormDto>();
+//        formDtos.add(formDto);
+//        modelAndView.addObject("masters",formDtos);formDtos
         return modelAndView;
     }
 }

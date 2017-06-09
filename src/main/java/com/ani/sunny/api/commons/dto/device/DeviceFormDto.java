@@ -4,7 +4,6 @@ import com.ani.bus.service.commons.dto.anidevice.DeviceMasterObjInfoDto;
 import com.ani.bus.service.commons.dto.anidevice.DeviceSlaveObjInfoDto;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by zhanglina on 17-5-26.
@@ -24,12 +23,12 @@ public class DeviceFormDto implements Serializable {
         this.masterId = masterId;
     }
 
-    public Long getDeviceId() {
-        return deviceId;
+    public Integer getSlaveId() {
+        return slaveId;
     }
 
-    public void setDeviceId(Long deviceId) {
-        this.deviceId = deviceId;
+    public void setSlaveId(Integer slaveId) {
+        this.slaveId = slaveId;
     }
 
     public String getDescription() {
@@ -49,7 +48,7 @@ public class DeviceFormDto implements Serializable {
     }
 
     private Long masterId;
-    private Long deviceId;
+    private Integer slaveId;
     private String name;
     private String description;
     private String deviceState;
@@ -64,9 +63,9 @@ public class DeviceFormDto implements Serializable {
     }
 
     public DeviceFormDto(){}
-    public DeviceFormDto(Long masterId,Long deviceId,String name,String description,String deviceState){
+    public DeviceFormDto(Long masterId, Integer slaveId, String name, String description, String deviceState){
         this.masterId=masterId;
-        this.deviceId=deviceId;
+        this.slaveId = slaveId;
         this.name=name;
         this.description=description;
         this.deviceState=deviceState;
@@ -74,8 +73,8 @@ public class DeviceFormDto implements Serializable {
 
     public  static DeviceFormDto fetchDeviceMasterObjInfoDto(DeviceMasterObjInfoDto deviceMasterObjInfoDto){
         DeviceFormDto deviceFormDto=new DeviceFormDto();
-        deviceFormDto.masterId=(long)-1;
-        deviceFormDto.deviceId=deviceMasterObjInfoDto.objectId;
+        deviceFormDto.masterId=deviceMasterObjInfoDto.objectId;
+        deviceFormDto.slaveId =-1;
         deviceFormDto.name=deviceMasterObjInfoDto.name;
         deviceFormDto.description=deviceMasterObjInfoDto.description;
         deviceFormDto.deviceState=deviceMasterObjInfoDto.state.toString();
@@ -83,7 +82,7 @@ public class DeviceFormDto implements Serializable {
     }
     public static DeviceFormDto fetchDeviceSlavaObjInfoDto(DeviceSlaveObjInfoDto deviceSlaveObjInfoDto){
         DeviceFormDto deviceFormDto=new DeviceFormDto();
-        deviceFormDto.deviceId=deviceSlaveObjInfoDto.objectSlaveId.longValue();
+        deviceFormDto.slaveId =deviceSlaveObjInfoDto.objectSlaveId;
         deviceFormDto.name=deviceSlaveObjInfoDto.name;
         deviceFormDto.description=deviceSlaveObjInfoDto.description;
         if (deviceSlaveObjInfoDto.state!=null){

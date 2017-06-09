@@ -57,7 +57,7 @@
 					<td>${obj.masterId}</td>
 					<td>${obj.deviceState}</td>
 
-					<td><a href="${ctx}/device/slave/${obj.deviceId}">查看详情</a></td>
+					<td><a href="${ctx}/device/slave/${obj.masterId}">查看详情</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
