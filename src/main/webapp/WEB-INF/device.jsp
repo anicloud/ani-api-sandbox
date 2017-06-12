@@ -11,6 +11,7 @@
     var webSocket = null;
 	window.onload=function () {
 		webSocket = new WebSocket("ws://localhost:8080/sunny/websocket");
+		alert("disj");
 	};
 	// 收到服务端消息
 	webSocket.onmessage = function (msg) {
@@ -25,6 +26,7 @@
 	// 建立连接
 	webSocket.onopen = function (event) {
 		console.log(event);
+		alert(event);
 	};
 
 	// 断线重连

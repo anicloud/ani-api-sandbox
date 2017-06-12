@@ -58,7 +58,10 @@ public class HomeController {
                     .getDeviceObjService(accessToken.getAccessToken())
                     .getAccessibleDeviceObjInfoList(accountDto.accountId, Boolean.TRUE);
             if(deviceMasterObjInfoDtoList!=null && deviceMasterObjInfoDtoList.size()!=0){
-                Constants.DEVICE_MASTER_MAPPINGS.put(accountDto.accountId,deviceMasterObjInfoDtoList);
+                if (Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId)==null){
+                    Constants.DEVICE_MASTER_MAPPINGS.put(accountDto.accountId,deviceMasterObjInfoDtoList);
+                }
+                deviceMasterObjInfoDtoList= Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId);
                 for (DeviceMasterObjInfoDto deviceMasterObjInfoDto:deviceMasterObjInfoDtoList){
                     DeviceFormDto deviceFormDto=DeviceFormDto.fetchDeviceMasterObjInfoDto(deviceMasterObjInfoDto);
                     deviceFormDtos.add(deviceFormDto);

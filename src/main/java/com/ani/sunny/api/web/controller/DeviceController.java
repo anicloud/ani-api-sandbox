@@ -48,8 +48,11 @@ public class DeviceController {
                 Long a=masterObjInfoDto.objectId;
                 if(a.equals(objectId)) {
                     flag = true;
-                    Constants.SLAVE_OBJ_INFO_DTO_MAP.put(accountDto.accountId+":"+objectId,masterObjInfoDto.slaves);
-                    List<DeviceSlaveObjInfoDto> deviceSlaveObjInfoDtos=masterObjInfoDto.slaves;
+                    if (Constants.SLAVE_OBJ_INFO_DTO_MAP.get(accountDto.accountId+":"+objectId)==null){
+                        Constants.SLAVE_OBJ_INFO_DTO_MAP.put(accountDto.accountId+":"+objectId,masterObjInfoDto.slaves);
+                    }
+
+                    List<DeviceSlaveObjInfoDto> deviceSlaveObjInfoDtos=Constants.SLAVE_OBJ_INFO_DTO_MAP.get(accountDto.accountId+":"+objectId);
                    // List<DeviceFormDto> deviceFormDtos=new ArrayList<DeviceFormDto>();
                     for (DeviceSlaveObjInfoDto deviceSlaveObjInfoDto:deviceSlaveObjInfoDtos){
                         DeviceFormDto deviceFormDto=DeviceFormDto.fetchDeviceSlavaObjInfoDto(deviceSlaveObjInfoDto);

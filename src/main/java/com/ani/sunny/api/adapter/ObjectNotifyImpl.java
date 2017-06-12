@@ -24,20 +24,13 @@ public class ObjectNotifyImpl implements ObjectNotify{
 
     @Override
     public void deviceConectedNotify(Long objectId, String description) {
-        try {
-            updateObjectState(objectId, DeviceState.CONNECTED);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sendMassage(description);
     }
 
     @Override
     public void deviceDisconnectedNotify(Long objectId, String description) {
-        try {
-            updateObjectState(objectId, DeviceState.DISCONNECTED);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sendMassage(description);
+
     }
 
     private void updateObjectState(Long objectId, DeviceState state) throws Exception{
@@ -64,22 +57,44 @@ public class ObjectNotifyImpl implements ObjectNotify{
 
     @Override
     public void deviceUpdatedNotify(DeviceMasterObjInfoDto deviceMasterObjInfoDto) {
+       // List<DeviceMasterObjInfoDto> deviceMasterObjInfoDtos=Constants.DEVICE_MASTER_MAPPINGS.get(deviceMasterObjInfoDto.owner.accountId);
+
+        Constants.SLAVE_OBJ_INFO_DTO_MAP.put(deviceMasterObjInfoDto.owner.accountId+":"+deviceMasterObjInfoDto.objectId,deviceMasterObjInfoDto.slaves);
+
+        //todo
     }
 
     @Override
     public void deviceStateUpdateNotify(AniStateObjectMessage aniStateObjectMessage)  {
-        Vector<WebSocketSession> sessions = SessionManager.getWebSocketSession(Constants.userId.toString());
         Map<String, Object> data = new HashMap<>();
-        data.put("massage",aniStateObjectMessage);
+        data.put("Massage",aniStateObjectMessage);
+        try{
+            WebSocketMessage webSocketMessage=new WebSocketMessage(Constants.userId,data,null);
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonData = mapper.writeValueAsString(webSocketMessage);
+            sendMassage(jsonData);
+        }catch (IOException e){
+            e.printStackTrace();
+
+        }
+
+
+    }
+    private void sendMassage(String massage){
+        Vector<WebSocketSession> sessions = SessionManager.getWebSocketSession(Constants.userId.toString());
+
         for (WebSocketSession session:sessions){
             try{
-                WebSocketMessage webSocketMessage=new WebSocketMessage(Constants.userId,data,null);
-                ObjectMapper mapper = new ObjectMapper();
-                String jsonData = mapper.writeValueAsString(webSocketMessage);
-                TextMessage message = new TextMessage(jsonData);
-                session.sendMessage(message);
+
+                TextMessage message = new TextMessage(massage);
+
+                if (session.isOpen()){
+                    session.sendMessage(message);
+                }
+
+
             }catch (IOException e){
-                System.out.println(e);
+                e.printStackTrace();
 
             }
 
