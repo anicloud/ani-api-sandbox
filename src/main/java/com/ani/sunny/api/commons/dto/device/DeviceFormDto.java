@@ -77,7 +77,9 @@ public class DeviceFormDto implements Serializable {
         deviceFormDto.slaveId =-1;
         deviceFormDto.name=deviceMasterObjInfoDto.name;
         deviceFormDto.description=deviceMasterObjInfoDto.description;
-        deviceFormDto.deviceState=deviceMasterObjInfoDto.state.toString();
+        if(deviceMasterObjInfoDto.state!=null){
+            deviceFormDto.deviceState=deviceMasterObjInfoDto.state.toString();
+        }
         return deviceFormDto;
     }
     public static DeviceFormDto fetchDeviceSlavaObjInfoDto(DeviceSlaveObjInfoDto deviceSlaveObjInfoDto){
