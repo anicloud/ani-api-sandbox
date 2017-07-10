@@ -1,8 +1,12 @@
 package com.ani.sunny.api.commons.dto.app;
 
+import com.ani.bus.service.commons.dto.aniservice.AniServiceDto;
+import com.ani.bus.service.commons.dto.aniservice.AniServiceEntranceDto;
+import com.ani.bus.service.commons.dto.aniservice.AniServiceInfoDto;
+import com.ani.bus.service.commons.dto.aniservice.LanguageEnum;
+
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by wyf on 17-3-7.
@@ -79,7 +83,69 @@ public class AppDto implements Serializable {
         this.accountId = accountId;
         this.entranceList = entranceList;
     }
+    public AniServiceDto toAniServiceDto(){
+        Set<String> tagsets=new HashSet<String>();
+        tagsets.add(this.tagSet);
+        Set<LanguageEnum> languageSet=new HashSet<LanguageEnum>();
+        languageSet.add(LanguageEnum.valueOf(this.languageSet));
+        AniServiceInfoDto aniServiceInfo=new AniServiceInfoDto(
+        this.serviceServerUrl ,
+        this.logoPath,
+        languageSet ,
+               tagsets,
+        this.price ,
+        this.onShelf ,
+        this.description
 
+        );
+        Set<String> resourceIds=new HashSet<String>();
+                resourceIds.add(this.resourceIds);
+        Set<String> scope=new HashSet<String>();
+        scope.add(this.scope);
+        Set<String> authorizedGrantTypes =new HashSet<String>();
+        Collection<String> authorities =new ArrayList<String>();
+        authorities.add(this.authorities);
+        authorizedGrantTypes.add(this.authorizedGrantTypes);
+        List<AniServiceEntranceDto> aniServiceEntranceDtos=new ArrayList<>(this.entranceList.size());
+       for (AppEntranceDto appEntranceDto:this.entranceList){
+           Set<String> tagSet=new HashSet<String>();
+                   tagSet.add(appEntranceDto.tagSet);
+           AniServiceEntranceDto aniServiceEntranceDto=new AniServiceEntranceDto(
+                   appEntranceDto.id,
+                   appEntranceDto.entranceName,
+                   appEntranceDto.entranceUrl,
+                   appEntranceDto.logoPath,
+                   tagSet,
+                   appEntranceDto.description
+           );
+           aniServiceEntranceDtos.add(aniServiceEntranceDto);
+       }
+        AniServiceDto aniServiceDto=new AniServiceDto(
+                this.aniServiceId,
+                this.serviceName,
+                this.version,
+                this.clientSecret,
+                resourceIds,
+                scope ,
+                authorizedGrantTypes,
+                authorities ,
+                this.webServerRedirectUri ,
+                this.accessTokenValidity,
+                this.refreshTokenValidity ,
+                this.autoApprove ,
+                this.registerDate ,
+                this.archived ,
+                this.trusted ,
+                this.accountId ,
+                aniServiceEntranceDtos,
+                aniServiceInfo
+
+
+        );
+
+      return aniServiceDto;
+
+    }
     @Override
     public String toString() {
         return "AniServiceDao{" +

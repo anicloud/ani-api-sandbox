@@ -7,6 +7,7 @@ import com.ani.sunny.api.commons.message.WebSocketMessage;
  */
 public class Test {
     public static void main(String[] args){
-        WebSocketMessage webSocketMessage=new WebSocketMessage();
+
+
     }
 }

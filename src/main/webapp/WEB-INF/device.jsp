@@ -10,12 +10,13 @@
 
     var webSocket = null;
 	window.onload=function () {
-		webSocket = new WebSocket("ws://localhost:8080/sunny/websocket");
+		webSocket = new WebSocket("ws://localhost:8082/sunny/websocket");
 		alert("edf");
+		alert(webSocket.readyState);
 	};
 	// 收到服务端消息
-	webSocket.onmessage = function (msg) {
-		console.log(msg);
+	webSocket.onmessage = function (event) {
+		console.log(event.data);
 	};
 
 	// 异常
@@ -25,8 +26,6 @@
 
 	// 建立连接
 	webSocket.onopen = function (event) {
-		console.log(event);
-		alert("dsfdsf");
 		alert(event);
 	};
 

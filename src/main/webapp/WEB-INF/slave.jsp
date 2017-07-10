@@ -10,7 +10,7 @@
 
     var webSocket = null;
     window.onload=function () {
-        webSocket = new WebSocket("ws://localhost:8080/sunny/websocket");
+        webSocket = new WebSocket("ws://localhost:8082/sunny/websocket");
     };
     // 收到服务端消息
     webSocket.onmessage = function (msg) {

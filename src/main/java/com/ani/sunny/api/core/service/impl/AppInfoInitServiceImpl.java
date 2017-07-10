@@ -24,7 +24,7 @@ public class AppInfoInitServiceImpl implements AppInfoInitService {
     private final static String FILE_PATH = "properties/AppInfo.json";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     @PostConstruct
-    public void getAniServiceInfo() throws IOException {
+    public AppDto getAniServiceInfo() throws IOException {
         DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
         Resource resource = resourceLoader.getResource(FILE_PATH);
         AppDto appDto = null;
@@ -36,5 +36,8 @@ public class AppInfoInitServiceImpl implements AppInfoInitService {
             throw new IOException("service information file not exists.");
         }
         Constants.APP_INFO_DTO = new AppInfoDto(appDto.aniServiceId, appDto.serviceName,appDto.clientSecret,appDto.webServerRedirectUri);
+
+        return appDto;
+
     }
 }
