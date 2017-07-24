@@ -4,7 +4,11 @@ import com.ani.agent.service.commons.oauth.dto.AniOAuthAccessToken;
 import com.ani.agent.service.commons.oauth.dto.AuthorizationCodeParameter;
 import com.ani.agent.service.service.AgentTemplate;
 import com.ani.bus.service.commons.dto.anidevice.DeviceMasterObjInfoDto;
+import com.ani.bus.service.commons.dto.aniservice.AniServiceObjInfoDto;
+import com.ani.bus.service.commons.dto.anistub.AniStub;
 import com.ani.earth.commons.dto.AccountDto;
+import com.ani.octopus.commons.stub.dto.StubArgumentDto;
+import com.ani.octopus.commons.stub.dto.StubInfoDto;
 import com.ani.sunny.api.commons.constants.Constants;
 import com.ani.sunny.api.commons.dto.device.DeviceFormDto;
 import com.ani.sunny.api.commons.util.OAuth2ParameterBuilder;
@@ -66,6 +70,29 @@ public class HomeController {
                 }
 
             }
+            List<AniServiceObjInfoDto> aniServiceObjInfoDtos=agentTemplate.getServiceObjService(accessToken.getAccessToken())
+                    .getAccessableSerObj(accountDto.accountId);
+            AniServiceObjInfoDto aniServiceObjInfoDto=aniServiceObjInfoDtos.get(1);
+
+                List<StubInfoDto> stubInfoDtos= aniServiceObjInfoDto.stubInfoDtos;
+                if(stubInfoDtos!=null &&stubInfoDtos.size()!=0){
+                    StubInfoDto stubInfoDto=stubInfoDtos.get(2);
+                    StubArgumentDto stubArgumentDto=new StubArgumentDto(1);
+                    List<StubArgumentDto> stubArgumentDtos=new ArrayList<>();
+                    stubArgumentDtos.add(stubArgumentDto);
+                    AniStub aniStub=new AniStub(
+                            aniServiceObjInfoDto.objectId,
+                            aniServiceObjInfoDto.accountId,
+                            stubInfoDto.group.groupId,
+                            stubInfoDto.stubId,
+                            stubArgumentDtos
+                    );
+                    agentTemplate.getAniInvokable(Constants.ANI_SERVICE_SESSION).invokeAniObjectSync(aniStub);
+                }
+
+
+
+
 
         } catch (Exception e) {
             DeviceFormDto deviceFormDto=new DeviceFormDto();

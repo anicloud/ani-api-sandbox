@@ -1,6 +1,7 @@
 package com.ani.sunny.api.commons.constants;
 
 import com.ani.bus.service.commons.session.AniServiceSession;
+import com.ani.sunny.api.commons.stub.SunnyStub;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
  */
 public class SunnyConstants {
     public static Map<String, String> SUNNY_NAME_MAPPINGS;
-   // public static Map<Integer, SunnyStub> SUNNY_STUB_MAPPINGS;
+    public static Map<Integer, SunnyStub> SUNNY_STUB_MAPPINGS;
 
     public static Map<String,Object> STATE_STUB_MAPPINGS;
 

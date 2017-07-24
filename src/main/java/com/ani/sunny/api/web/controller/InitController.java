@@ -44,29 +44,7 @@ public class InitController{
     @PostConstruct
     public void init() {
         try{
-
-            // you need to implement the Invokable interface and register on
-            // WebSocketClient for anicloud platform to callback
-            Constants.ANI_SERVICE_SESSION= agentTemplate.connect(aniServiceAuth,aniServiceInit);
-//            WebSocketClient socketClient = new WebSocketClient(invokable,objectNotify,accountNotify);
-////            WebSocketClient socketClient = new WebSocketClient(invokable,objectNotify);
-//
-//            // you need to implement your own observer and register on socketClient
-//            // to receive the message from anicloud platform
-//            Vector<MessageObserver> messageObservers = new Vector<>();
-//            messageObservers.add(new AniObjectCallMessageObserver());
-//            socketClient.setObs(messageObservers);
-//
-//            // inject your WebSocketClient instance and anicloud socket destination url to factory
-//            // and use factory to get the session, than you can use the session to communicate
-//            // with anicloud platform
-//            WebSocketSessionFactory sessionFactory = new WebSocketSessionFactory(
-//                    socketClient,
-//                    anicelMeta,
-//                    Constants.APP_INFO_DTO.aniServiceId,
-//                    Constants.APP_INFO_DTO.clientSecret
-//            );
-  //           = sessionFactory.getAniServiceSession();
+                Constants.ANI_SERVICE_SESSION= agentTemplate.connect(aniServiceAuth,aniServiceInit);
             LOGGER.info("build ani service session success.");
         } catch (Exception e) {
             e.printStackTrace();

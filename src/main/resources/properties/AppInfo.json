@@ -1,9 +1,9 @@
 {
   "id": 1,
-  "aniServiceId": "4179534896636742215",
-  "serviceName": "ani-sandbox",
+  "aniServiceId": "7832310714221045840",
+  "serviceName": "sunny1",
   "version": "1.0",
-  "clientSecret": "7e2e16309b08d549d419cfaca63f9b7b",
+  "clientSecret": "c76d5b05ff72e3aa5097b2164864ff0f",
   "resourceIds": "system-resource",
   "scope": "read,write",
   "authorizedGrantTypes": "authorization_code,refresh_token,password,implicit",

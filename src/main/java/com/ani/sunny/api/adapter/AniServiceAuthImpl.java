@@ -29,7 +29,7 @@ public class AniServiceAuthImpl implements AniServiceAuth{
             e.printStackTrace();
             return null;
         }
-
+  //      return null;
     }
 
     @Override
@@ -63,14 +63,19 @@ public class AniServiceAuthImpl implements AniServiceAuth{
                 );
                 aniServiceEntranceDtos.add(aniServiceEntranceDto);
             }
+            Map<Long,List<Integer>> stubMap=new HashMap<>();
+            List<Integer> stubList =new ArrayList<>();
+            stubList.add(1);
+            stubList.add(2);
+            stubMap.put(1L,stubList);
             AniServiceRegisterDto aniServiceRegisterDto=new AniServiceRegisterDto(
-                    appDto.serviceName,
+                    "sandbox1",
                     appDto.version,
                     appDto.webServerRedirectUri,
                     appDto.accountId,
                     aniServiceEntranceDtos,
                     aniServiceInfo,
-                    new HashMap<>()
+                    stubMap
             );
             return aniServiceRegisterDto;
         }catch (IOException e){
