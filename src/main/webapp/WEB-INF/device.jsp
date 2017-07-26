@@ -56,8 +56,10 @@
 					<td>${obj.deviceState}</td>
 
 					<td><a href="${ctx}/device/slave/${obj.masterId}">查看详情</a></td>
+					<td><a href="${ctx}/test/invoke">执行</a>/td>
 				</tr>
 			</c:forEach>
+
 		</tbody>
 	</table>
 </div>

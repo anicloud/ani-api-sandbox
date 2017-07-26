@@ -43,7 +43,9 @@ public class HomeController {
         AuthorizationCodeParameter authorizationCodeParameter = OAuth2ParameterBuilder.buildForAccessToken(Constants.APP_INFO_DTO);
         AniOAuthAccessToken accessToken = agentTemplate.getAniOAuthService().getOAuth2AccessToken(code, authorizationCodeParameter);
         AccountDto accountDto = agentTemplate.getAccountService(accessToken.getAccessToken()).getByAccessToken();
+
         Constants.userId=accountDto.accountId;
+        Constants.aniOAuthAccessToken=accessToken;
         HttpSession session = request.getSession();
         session.setAttribute(Constants.SUNNY_HASH_USER_ID_SESSION,accountDto.accountId);
         session.setAttribute(Constants.ACCESS_TOKEN_SESSION_NAME,accessToken.getAccessToken());
@@ -70,25 +72,8 @@ public class HomeController {
                 }
 
             }
-            List<AniServiceObjInfoDto> aniServiceObjInfoDtos=agentTemplate.getServiceObjService(accessToken.getAccessToken())
-                    .getAccessableSerObj(accountDto.accountId);
-            AniServiceObjInfoDto aniServiceObjInfoDto=aniServiceObjInfoDtos.get(1);
 
-                List<StubInfoDto> stubInfoDtos= aniServiceObjInfoDto.stubInfoDtos;
-                if(stubInfoDtos!=null &&stubInfoDtos.size()!=0){
-                    StubInfoDto stubInfoDto=stubInfoDtos.get(2);
-                    StubArgumentDto stubArgumentDto=new StubArgumentDto(1);
-                    List<StubArgumentDto> stubArgumentDtos=new ArrayList<>();
-                    stubArgumentDtos.add(stubArgumentDto);
-                    AniStub aniStub=new AniStub(
-                            aniServiceObjInfoDto.objectId,
-                            aniServiceObjInfoDto.accountId,
-                            stubInfoDto.group.groupId,
-                            stubInfoDto.stubId,
-                            stubArgumentDtos
-                    );
-                    agentTemplate.getAniInvokable(Constants.ANI_SERVICE_SESSION).invokeAniObjectSync(aniStub);
-                }
+
 
 
 

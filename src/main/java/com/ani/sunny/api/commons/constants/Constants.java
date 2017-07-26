@@ -1,5 +1,6 @@
 package com.ani.sunny.api.commons.constants;
 
+import com.ani.agent.service.commons.oauth.dto.AniOAuthAccessToken;
 import com.ani.bus.service.commons.dto.anidevice.DeviceMasterObjInfoDto;
 import com.ani.bus.service.commons.dto.anidevice.DeviceSlaveObjInfoDto;
 import com.ani.octopus.commons.stub.dto.StubArgumentInfoDto;
@@ -25,4 +26,5 @@ public class Constants {
     public static Map<Long,List<DeviceMasterObjInfoDto>> DEVICE_MASTER_MAPPINGS=new HashMap<>();
     public static Map<String,List<DeviceSlaveObjInfoDto>> SLAVE_OBJ_INFO_DTO_MAP=new HashMap<>();
     public static Map<String,List<StubInfoDto>> SLAVE_STUB_MAPPINGS=new HashMap<>();
+    public static AniOAuthAccessToken aniOAuthAccessToken;
 }

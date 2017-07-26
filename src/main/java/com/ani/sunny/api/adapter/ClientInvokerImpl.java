@@ -23,21 +23,23 @@ import java.util.*;
 public class ClientInvokerImpl implements ClientInvokable {
     @Override
     public List<StubArgumentDto> invokeAniObjectSync(AniStub stub) throws IOException, EncodeException {
-        if (!DomainObjectValidator.isDomainObjectValid(stub)) {
-            throw new ValidationException("Invalid AniStub Instance.");
-        }
-       List<StubArgumentDto> outputArguments=stub.outputArguments;
-        if(outputArguments==null){
-            outputArguments=new ArrayList<>();
-            StubArgumentDto stubArgumentDto=new StubArgumentDto();
-            stubArgumentDto.value="success";
-            outputArguments.add(stubArgumentDto);
-        }
-        return outputArguments;
+//        if (!DomainObjectValidator.isDomainObjectValid(stub)) {
+//            throw new ValidationException("Invalid AniStub Instance.");
+//        }
+//       List<StubArgumentDto> outputArguments=stub.outputArguments;
+//        if(outputArguments==null){
+//            outputArguments=new ArrayList<>();
+//            StubArgumentDto stubArgumentDto=new StubArgumentDto();
+//            stubArgumentDto.value="success";
+//            outputArguments.add(stubArgumentDto);
+//        }
+//        return outputArguments;
+        return null;
     }
 
     @Override
     public void sessionOnClose(String s, CloseReason closeReason) {
+        System.out.println(closeReason+"----------------");
         // TODO
     }
 
