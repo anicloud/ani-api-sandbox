@@ -8,6 +8,10 @@ import com.ani.bus.service.commons.session.AniServiceSession;
 import com.ani.octopus.commons.stub.dto.StubInfoDto;
 import com.ani.sunny.api.commons.dto.app.AppInfoDto;
 
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +29,12 @@ public class Constants {
     public static final String SUNNY_HASH_USER_ID_SESSION = "sunnyHashUserIdSession";
     public static Map<Long,List<DeviceMasterObjInfoDto>> DEVICE_MASTER_MAPPINGS=new HashMap<>();
     public static Map<String,List<DeviceSlaveObjInfoDto>> SLAVE_OBJ_INFO_DTO_MAP=new HashMap<>();
+    public static Map<String,List<StubInfoDto>> MASTER_STUB_MAPPING=new HashMap<>();
     public static Map<String,List<StubInfoDto>> SLAVE_STUB_MAPPINGS=new HashMap<>();
     public static AniOAuthAccessToken aniOAuthAccessToken;
+    public static List<String> messageList=new ArrayList<String>(10);
+    public static DatagramSocket datagramSocket;
+    public static InetAddress address;
+    public static int port;
+    public static Socket socket;
 }

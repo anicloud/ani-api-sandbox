@@ -46,17 +46,9 @@ public class StubInstance {
             AgentTemplate agentTemplate = (AgentTemplate) SpringContextHolder.getBean("agentTemplate");
             AniInvokable aniInvokable = agentTemplate.getAniInvokable(Constants.ANI_SERVICE_SESSION);
            // LOGGER.info("----Stub invoke :"+groupId+" "+stubId +", SystemTime is : " + System.currentTimeMillis());
-            AniStub result = aniInvokable.invokeAniObjectSync(aniStub);
+            aniInvokable.invokeAniObjectSync(aniStub);
           //  LOGGER.info("----Stub invoke result receive, " +"SystemTime is : " + System.currentTimeMillis());
-            if (result.resultMsg.getResultCode() == Message.ResultCode.OBJECT_CALL_ERROR) {
-              //  LOGGER.error("function execute failed, stubId is {}, groupId is {},result {}.",
-                //        stubId, groupId, result.resultMsg.getMsg());
-                //todo：调用失败 界面显示
-                return false;
-            } else {
-               // LOGGER.info("function execute success, stubId is {}, groupId is {},result {}.",
-                //        stubId, groupId, result);
-            }
+
         } catch (IOException | EncodeException e) {
             //LOGGER.error("function execute failed, stubId is {}, groupId is {},result {}.",
                 //    stubId, groupId, e.getMessage());
@@ -115,7 +107,13 @@ public class StubInstance {
         StubInstance stubInstance=new StubInstance();
         if(stubInstanceDto!=null){
             stubInstance.masterId=stubInstanceDto.masterId;
-            stubInstance.deviceId=stubInstanceDto.deviceId.intValue();
+            if (stubInstanceDto.deviceId.intValue()==-1){
+                stubInstance.deviceId=null;
+            }else {
+                stubInstance.deviceId=stubInstanceDto.deviceId.intValue();
+            }
+
+
             stubInstance.stubId=stubInstanceDto.stubId;
             stubInstance.name=stubInstanceDto.name;
             stubInstance.groupId=stubInstanceDto.groupId;

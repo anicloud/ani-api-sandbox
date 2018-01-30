@@ -58,24 +58,18 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("device");
         List<DeviceFormDto> deviceFormDtos =new ArrayList<DeviceFormDto>();
         try {
-            List<DeviceMasterObjInfoDto> deviceMasterObjInfoDtoList = agentTemplate
-                    .getDeviceObjService(accessToken.getAccessToken())
-                    .getAccessibleDeviceObjInfoList(accountDto.accountId, Boolean.TRUE);
-            if(deviceMasterObjInfoDtoList!=null && deviceMasterObjInfoDtoList.size()!=0){
                 if (Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId)==null){
-                    Constants.DEVICE_MASTER_MAPPINGS.put(accountDto.accountId,deviceMasterObjInfoDtoList);
+                    List<DeviceMasterObjInfoDto> deviceMasterObjInfoDtoList = agentTemplate
+                            .getDeviceObjService(accessToken.getAccessToken())
+                            .getAccessibleDeviceObjInfoList(accountDto.accountId, Boolean.TRUE);
+                Constants.DEVICE_MASTER_MAPPINGS.put(accountDto.accountId,deviceMasterObjInfoDtoList);
                 }
-                deviceMasterObjInfoDtoList= Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId);
+            List<DeviceMasterObjInfoDto> deviceMasterObjInfoDtoList= Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId);
+                if (deviceMasterObjInfoDtoList!=null&& deviceMasterObjInfoDtoList.size()!=0)
                 for (DeviceMasterObjInfoDto deviceMasterObjInfoDto:deviceMasterObjInfoDtoList){
                     DeviceFormDto deviceFormDto=DeviceFormDto.fetchDeviceMasterObjInfoDto(deviceMasterObjInfoDto);
                     deviceFormDtos.add(deviceFormDto);
                 }
-
-            }
-
-
-
-
 
 
 

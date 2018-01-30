@@ -10,9 +10,8 @@
 
     var webSocket = null;
 	window.onload=function () {
-		webSocket = new WebSocket("ws://localhost:8082/sunny/websocket");
-		alert("edf");
-		alert(webSocket.readyState);
+	//	webSocket = new WebSocket("ws://192.168.1.132:8082/sunny/websocket");
+        webSocket = new WebSocket("ws://sandbox.bj.anicel.cn:8000/sunny/websocket")
 	};
 	// 收到服务端消息
 	webSocket.onmessage = function (event) {
@@ -54,11 +53,12 @@
 					<td>${obj.description}</td>
 					<td>${obj.masterId}</td>
 					<td>${obj.deviceState}</td>
+					<td><a href="${ctx}/device/slave/${obj.masterId}">查看slave</a></td>
+					<td><a href="${ctx}/device/stub/${obj.masterId}">查看stub</a>/td>
 
-					<td><a href="${ctx}/device/slave/${obj.masterId}">查看详情</a></td>
-					<td><a href="${ctx}/test/invoke">执行</a>/td>
 				</tr>
 			</c:forEach>
+			<td><a href="${ctx}/message/show">查看消息列表</a>/td>
 
 		</tbody>
 	</table>

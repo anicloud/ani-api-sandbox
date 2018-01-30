@@ -4,6 +4,7 @@ import com.ani.agent.service.service.aniservice.AniServiceInit;
 import com.ani.agent.service.service.websocket.AccountNotify;
 import com.ani.agent.service.service.websocket.ClientInvokable;
 import com.ani.agent.service.service.websocket.ObjectNotify;
+import com.ani.agent.service.service.websocket.StubInvokeListener;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,5 +25,10 @@ public class AniServiceInitImpl implements AniServiceInit {
     @Override
     public AccountNotify getAccountNotify() {
        return  new AccountNotifyImpl();
+    }
+
+    @Override
+    public StubInvokeListener getStubInvokeListener() {
+     return new StubInvokeListenerImpl();
     }
 }

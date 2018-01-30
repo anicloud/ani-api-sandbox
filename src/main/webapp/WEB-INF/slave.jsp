@@ -10,7 +10,8 @@
 
     var webSocket = null;
     window.onload=function () {
-        webSocket = new WebSocket("ws://localhost:8082/sunny/websocket");
+     //   webSocket = new WebSocket("ws://192.168.1.132:8082/sunny/websocket");
+        webSocket = new WebSocket("ws://sandbox.bj.anicel.cn:8000/sunny/websocket")
     };
     // 收到服务端消息
     webSocket.onmessage = function (msg) {
@@ -54,6 +55,7 @@
                 <td>${obj.slaveId}</td>
                 <td>${obj.deviceState}</td>
                 <td><a href="${ctx}/device/slave/stubs/${obj.masterId}/${obj.slaveId}">查看详情</a></td>
+                <td><a href="${ctx}/test/invoke">执行</a></td>
             </tr>
         </c:forEach>
         </tbody>

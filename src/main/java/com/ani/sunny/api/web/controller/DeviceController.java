@@ -1,6 +1,7 @@
 package com.ani.sunny.api.web.controller;
 
 import com.ani.agent.service.service.AgentTemplate;
+import com.ani.agent.service.service.websocket.StubInvokeListener;
 import com.ani.bus.service.commons.dto.anidevice.DeviceMasterObjInfoDto;
 import com.ani.bus.service.commons.dto.anidevice.DeviceSlaveObjInfoDto;
 import com.ani.earth.commons.dto.AccountDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import javax.rmi.CORBA.Stub;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -69,7 +71,6 @@ public class DeviceController {
                   DeviceFormDto deviceFormDto=new DeviceFormDto();
                   deviceFormDto.setName("主设备不存在");
 
-
             }
         } else {
             DeviceFormDto deviceFormDto=new DeviceFormDto();
@@ -78,6 +79,48 @@ public class DeviceController {
         modelAndView.addObject("slaves",deviceFormDtos);
         return modelAndView;
     }
+    @RequestMapping("/stub/{objectId}")
+    public ModelAndView getMasterStubs(HttpServletRequest request, @PathVariable Long objectId){
+        HttpSession session = request.getSession();
+        String accessToken = String.valueOf(session.getAttribute(Constants.ACCESS_TOKEN_SESSION_NAME));
+        ModelAndView modelAndView=new ModelAndView("stub");
+        //ModelAndView result = new ModelAndView("stub");
+        List<StubDto> masterStubs=new ArrayList<StubDto>();
+        if (!StringUtils.isEmpty(accessToken)){
+            AccountDto accountDto = agentTemplate.getAccountService(accessToken).getByAccessToken();
+            boolean flag = false;
+            if(Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId) != null)
+                for(DeviceMasterObjInfoDto masterObjInfoDto:Constants.DEVICE_MASTER_MAPPINGS.get(accountDto.accountId)) {
+                    Long a=masterObjInfoDto.objectId;
+                    if(a.equals(objectId)) {
+                        flag = true;
+                        if (Constants.MASTER_STUB_MAPPING.get(accountDto.accountId+":"+objectId)==null){
+                            Constants.MASTER_STUB_MAPPING.put(accountDto.accountId+":"+objectId,masterObjInfoDto.stubs);
+                        }
+
+                        List<StubInfoDto> stubInfoDtos=Constants.MASTER_STUB_MAPPING.get(accountDto.accountId+":"+objectId);
+                        // List<DeviceFormDto> deviceFormDtos=new ArrayList<DeviceFormDto>();
+                        for (StubInfoDto stubInfoDto:stubInfoDtos){
+                            StubDto stubDto=StubDto.fetchStubInfoDto(stubInfoDto);
+                            stubDto.setMasterId(objectId);
+                            stubDto.setSlaveId(-1);
+                            masterStubs.add(stubDto);
+                        }
+                        modelAndView.addObject("stubs",masterStubs);
+                        break;
+                    }
+                }
+            if(!flag) {
+                //为了方便前台展示这样写
+                DeviceFormDto deviceFormDto=new DeviceFormDto();
+                deviceFormDto.setName("主设备不存在");
+
+
+            }
+        }
+        return modelAndView;
+    }
+
     @RequestMapping("/slave/stubs/{masterId}/{slaveId}")
 
     public ModelAndView getSlaveStubs(HttpServletRequest request,@PathVariable Long masterId,@PathVariable Integer slaveId) {

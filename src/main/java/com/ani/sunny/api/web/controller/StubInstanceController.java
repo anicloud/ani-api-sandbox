@@ -11,6 +11,9 @@ import com.ani.sunny.api.commons.dto.stub.StubDto;
 import com.ani.sunny.api.commons.dto.stub.StubInstanceDto;
 import com.ani.sunny.api.commons.dto.user.UserDto;
 import com.ani.sunny.api.core.service.service.stub.StubInstanceService;
+import com.ani.sunny.api.thread.PortLisenter;
+import com.ani.sunny.api.thread.PortTcpLisenter;
+import com.ani.utils.network.IpAddress;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,10 +46,17 @@ public class StubInstanceController {
             DeviceFormDto deviceFormDto=DeviceFormDto.fetchDeviceMasterObjInfoDto(deviceMasterObjInfoDto);
             deviceFormDtos.add(deviceFormDto);
         }
-        List<StubInfoDto> stubInfoDtoList=Constants.SLAVE_STUB_MAPPINGS.get(masterId+":"+slaveId);
+        List<StubInfoDto> stubInfoDtoList=null;
+        if (slaveId==-1){
+            stubInfoDtoList =Constants.MASTER_STUB_MAPPING.get(hashUserId+":"+masterId);
+        }else {
+            stubInfoDtoList =Constants.SLAVE_STUB_MAPPINGS.get(masterId+":"+slaveId);
+
+
+        }
         List<StubDto> stubDtos=new ArrayList<StubDto>();
         for (StubInfoDto stubInfoDto:stubInfoDtoList){
-            stubDtos.add(StubDto.fetchStubInfoDto(stubInfoDto));
+             stubDtos.add(StubDto.fetchStubInfoDto(stubInfoDto));
             if(stubId.equals(stubInfoDto.stubId) && groupId.equals(stubInfoDto.group.groupId) ){
                 stubInstanceDto=new StubInstanceDto();
                 stubInstanceDto.groupId=stubInfoDto.group.groupId;
@@ -70,7 +80,21 @@ public class StubInstanceController {
         }
         try {
             if (stubInstanceDto!=null){
+
+                if (stubInstanceDto.groupId==13 && stubInstanceDto.stubId==309){
+                    stubInstanceDto.inputList.get(2).value=IpAddress.getIpAddress();
+                    PortLisenter portLisenter=new PortLisenter(Integer.parseInt(stubInstanceDto.inputList.get(3).value));
+                    Thread thread = new Thread(portLisenter);
+                    thread.start();
+                }
+                if (stubInstanceDto.groupId==13 && stubInstanceDto.stubId==311){
+                        stubInstanceDto.inputList.get(2).value=IpAddress.getIpAddress();
+                        PortTcpLisenter portLisenter=new PortTcpLisenter(Integer.parseInt(stubInstanceDto.inputList.get(3).value));
+                        Thread thread = new Thread(portLisenter);
+                        thread.start();
+                }
                 boolean result = stubInstanceService.invokeStubInstance(stubInstanceDto);
+
                 if(result){
                     message.addObject("masters",deviceFormDtos);
 
@@ -84,8 +108,7 @@ public class StubInstanceController {
             }
 
         }catch (Exception e){
-
-            DeviceFormDto deviceFormDto=new DeviceFormDto();
+             DeviceFormDto deviceFormDto=new DeviceFormDto();
             deviceFormDto.setName("验证失败");
             List<DeviceFormDto> stubDtos2=new ArrayList<>();
             stubDtos2.add(deviceFormDto);

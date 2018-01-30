@@ -4,6 +4,7 @@ import com.ani.agent.service.commons.object.enumeration.DeviceState;
 import com.ani.agent.service.service.websocket.ObjectNotify;
 import com.ani.bus.service.commons.dto.anidevice.DeviceMasterObjInfoDto;
 import com.ani.bus.service.commons.message.callmessage.AniStateObjectMessage;
+import com.ani.octopus.commons.stub.dto.StubInfoDto;
 import com.ani.sunny.api.commons.constants.Constants;
 import com.ani.sunny.api.commons.message.WebSocketMessage;
 import com.ani.sunny.api.commons.util.SessionManager;
@@ -29,7 +30,7 @@ public class ObjectNotifyImpl implements ObjectNotify{
 
     @Override
     public void deviceDisconnectedNotify(Long objectId, String description) {
-        sendMassage(description);
+        //sendMassage(description);
 
     }
 
@@ -58,21 +59,38 @@ public class ObjectNotifyImpl implements ObjectNotify{
     @Override
     public void deviceUpdatedNotify(DeviceMasterObjInfoDto deviceMasterObjInfoDto) {
        // List<DeviceMasterObjInfoDto> deviceMasterObjInfoDtos=Constants.DEVICE_MASTER_MAPPINGS.get(deviceMasterObjInfoDto.owner.accountId);
-
+       // Constants.SLAVE_OBJ_INFO_DTO_MAP.get(deviceMasterObjInfoDto.owner.accountId+":"+deviceMasterObjInfoDto.objectId);
+//        List<StubInfoDto> stubs = deviceMasterObjInfoDto.stubs;
+//        List<StubInfoDto> stubs1 = Constants.MASTER_STUB_MAPPING.get(deviceMasterObjInfoDto.owner.accountId+":"+deviceMasterObjInfoDto.objectId);
+//        for (StubInfoDto stub:stubs){
+//            boolean b=false;
+//            for (StubInfoDto stub1:stubs1){
+//                if (stub.group.groupId.equals(stub1.group.groupId)&&stub.stubId.equals(stub1.stubId)){
+//
+//                }
+//            }
+//        }
+        Constants.MASTER_STUB_MAPPING.put(deviceMasterObjInfoDto.owner.accountId+":"+deviceMasterObjInfoDto.objectId,deviceMasterObjInfoDto.stubs);
         Constants.SLAVE_OBJ_INFO_DTO_MAP.put(deviceMasterObjInfoDto.owner.accountId+":"+deviceMasterObjInfoDto.objectId,deviceMasterObjInfoDto.slaves);
+       // Constants.SLAVE_OBJ_INFO_DTO_MAP.put(deviceMasterObjInfoDto.owner.accountId+":"+deviceMasterObjInfoDto.objectId,deviceMasterObjInfoDto.slaves);
+        //List<StubInfoDto> infoDtos= deviceMasterObjInfoDto.stubs;
 
-        //todo
+
     }
 
     @Override
-    public void deviceStateUpdateNotify(AniStateObjectMessage aniStateObjectMessage)  {
+    public void deviceStateUpdateNotify(AniStateObjectMessage stateMessage)  {
+
         Map<String, Object> data = new HashMap<>();
-        data.put("Massage",aniStateObjectMessage);
+        data.put("Massage",stateMessage);
         try{
             WebSocketMessage webSocketMessage=new WebSocketMessage(Constants.userId,data,null);
             ObjectMapper mapper = new ObjectMapper();
             String jsonData = mapper.writeValueAsString(webSocketMessage);
-            sendMassage(jsonData);
+            Constants.messageList.clear();
+            Constants.messageList.add(jsonData);
+
+
         }catch (IOException e){
             e.printStackTrace();
 
