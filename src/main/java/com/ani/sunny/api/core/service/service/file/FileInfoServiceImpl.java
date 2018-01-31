@@ -40,12 +40,12 @@ public class FileInfoServiceImpl implements FileInfoService {
     public String writeToFile(String value) {
         FileWriter writer;
         try {
-            writer = new FileWriter("/home/zhanglina/remote1.sdp");
+            writer = new FileWriter("/home/anicloud/sdp/remote1.sdp");
             writer.write(value);
             writer.flush();
             writer.close();
-            File oldFile=new File("/home/zhanglina/remote1.sdp");
-            File newFile=new File("/home/zhanglina/remote.sdp");
+            File oldFile=new File("/home/anicloud/sdp/remote1.sdp");
+            File newFile=new File("/home/anicloud/sdp/remote.sdp");
             oldFile.renameTo(newFile);
 
         } catch (IOException e) {

@@ -98,7 +98,7 @@ public class StubInstanceController {
                         thread.start();
                 }
                 if (stubInstanceDto.groupId==512 && stubInstanceDto.stubId==3){
-                    String str=fileInfoService.readFromFile("/home/zhanglina/local.sdp");
+                    String str=fileInfoService.readFromFile("/home/anicloud/sdp/local.sdp");
 
                     stubInstanceDto.inputList.get(0).value=str;
 
