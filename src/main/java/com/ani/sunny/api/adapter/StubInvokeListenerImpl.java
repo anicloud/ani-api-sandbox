@@ -4,7 +4,10 @@ import com.ani.agent.service.service.websocket.StubInvokeListener;
 import com.ani.bus.service.commons.dto.anistub.AniStub;
 import com.ani.octopus.commons.stub.dto.StubArgumentDto;
 import com.ani.sunny.api.commons.constants.Constants;
+import com.ani.sunny.api.core.service.service.file.FileInfoService;
+import com.ani.sunny.api.core.service.service.file.FileInfoServiceImpl;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import java.awt.image.BufferedImage;
@@ -15,6 +18,8 @@ import java.net.*;
  * Created by zhanglina on 17-7-28.
  */
 public class StubInvokeListenerImpl implements StubInvokeListener {
+
+
     @Override
     public void receiveInvokeResult(AniStub aniStub) {
         switch (aniStub.stubId){
@@ -23,11 +28,19 @@ public class StubInvokeListenerImpl implements StubInvokeListener {
             case 307:handByUdp(aniStub);break;
             case 309:handByUdpThread(aniStub);break;
             case 311:handByTcpThread(aniStub);break;
+            case 3: writeToLocal(aniStub);
 
         }
 
 //            // 4.向服务器端发送数据报
 
+
+    }
+    public void writeToLocal(AniStub aniStub){
+        StubArgumentDto argumentDto=aniStub.outputArguments.get(0);
+        String value=(String) argumentDto.getValue();
+        FileInfoServiceImpl fileInfoService=new FileInfoServiceImpl();
+        fileInfoService.writeToFile(value);
 
     }
      private void handByUdpThread(AniStub aniStub){

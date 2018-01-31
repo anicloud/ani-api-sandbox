@@ -7,9 +7,11 @@ import com.ani.sunny.api.commons.constants.Constants;
 import com.ani.sunny.api.commons.constants.SunnyConstants;
 import com.ani.sunny.api.commons.dto.device.DeviceFormDto;
 import com.ani.sunny.api.commons.dto.stub.StubArgInstanceDto;
+import com.ani.sunny.api.commons.dto.stub.StubArgumentDto;
 import com.ani.sunny.api.commons.dto.stub.StubDto;
 import com.ani.sunny.api.commons.dto.stub.StubInstanceDto;
 import com.ani.sunny.api.commons.dto.user.UserDto;
+import com.ani.sunny.api.core.service.service.file.FileInfoService;
 import com.ani.sunny.api.core.service.service.stub.StubInstanceService;
 import com.ani.sunny.api.thread.PortLisenter;
 import com.ani.sunny.api.thread.PortTcpLisenter;
@@ -34,6 +36,8 @@ import java.util.List;
 public class StubInstanceController {
     @Resource
     StubInstanceService stubInstanceService;
+    @Resource
+    FileInfoService fileInfoService;
     @RequestMapping("/invoke/{masterId}/{slaveId}/{groupId}/{stubId}")
     public ModelAndView invokeStub(HttpServletRequest request, @PathVariable Long masterId,@PathVariable Integer slaveId,@PathVariable Long groupId,@PathVariable Integer stubId){
         ModelAndView  message =new ModelAndView("device");
@@ -92,6 +96,12 @@ public class StubInstanceController {
                         PortTcpLisenter portLisenter=new PortTcpLisenter(Integer.parseInt(stubInstanceDto.inputList.get(3).value));
                         Thread thread = new Thread(portLisenter);
                         thread.start();
+                }
+                if (stubInstanceDto.groupId==512 && stubInstanceDto.stubId==3){
+                    String str=fileInfoService.readFromFile("/home/zhanglina/local.sdp");
+
+                    stubInstanceDto.inputList.get(0).value=str;
+
                 }
                 boolean result = stubInstanceService.invokeStubInstance(stubInstanceDto);
 

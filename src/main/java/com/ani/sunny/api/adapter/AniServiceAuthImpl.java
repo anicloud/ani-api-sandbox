@@ -21,6 +21,7 @@ public class AniServiceAuthImpl implements AniServiceAuth{
 
     @Override
     public AniServiceDto getAniService() {
+
         try {
           AppDto appDto= appInfoInitService.getAniServiceInfo();
            return appDto.toAniServiceDto();
@@ -34,6 +35,7 @@ public class AniServiceAuthImpl implements AniServiceAuth{
 
     @Override
     public AniServiceRegisterDto getAniServiceRegisterDto() {
+
         try {
             AppDto appDto=appInfoInitService.getAniServiceInfo();
             Set<String> tagsets=new HashSet<String>();
