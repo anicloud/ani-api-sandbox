@@ -44,9 +44,16 @@ public class FileInfoServiceImpl implements FileInfoService {
             writer.write(value);
             writer.flush();
             writer.close();
+            File oldFile=new File("/home/zhanglina/remote1.sdp");
+            File newFile=new File("/home/zhanglina/remote.sdp");
+            oldFile.renameTo(newFile);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+    public static void main(String[] args){
+
     }
 }

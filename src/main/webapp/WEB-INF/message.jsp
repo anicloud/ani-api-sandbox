@@ -10,7 +10,8 @@
 
     var webSocket = null;
     window.onload=function () {
-        webSocket = new WebSocket("ws://192.168.1.132:8082/sunny/websocket");
+        webSocket = new WebSocket("ws://172.20.10.3:8082/sunny/websocket");
+       // webSocket = new WebSocket("ws://192.168.1.132:8082/sunny/websocket");
 //        webSocket = new WebSocket("ws://sandbox.bj.anicel.cn:8000/sunny/websocket")
     };
     // 收到服务端消息
