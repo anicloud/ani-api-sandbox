@@ -4,8 +4,12 @@ import com.ani.agent.service.service.websocket.StubInvokeListener;
 import com.ani.bus.service.commons.dto.anistub.AniStub;
 import com.ani.octopus.commons.stub.dto.StubArgumentDto;
 import com.ani.sunny.api.commons.constants.Constants;
+import com.ani.sunny.api.commons.constants.SunnyConstants;
+import com.ani.sunny.api.commons.util.SessionManager;
 import com.ani.sunny.api.core.service.service.file.FileInfoService;
 import com.ani.sunny.api.core.service.service.file.FileInfoServiceImpl;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -13,6 +17,7 @@ import javax.imageio.stream.FileImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
+import java.util.Vector;
 
 /**
  * Created by zhanglina on 17-7-28.
@@ -39,10 +44,15 @@ public class StubInvokeListenerImpl implements StubInvokeListener {
     public void writeToLocal(AniStub aniStub){
         StubArgumentDto argumentDto=aniStub.outputArguments.get(0);
         String value=(String) argumentDto.getValue();
-        FileInfoServiceImpl fileInfoService=new FileInfoServiceImpl();
-        fileInfoService.writeToFile(value);
+        SunnyConstants.stubValueDto.setName("test");
+        SunnyConstants.stubValueDto.setValue(value);
+        synchronized(SunnyConstants.stubValueDto){
+            SunnyConstants.stubValueDto.notify();
+        }
 
+       
     }
+        
      private void handByUdpThread(AniStub aniStub){
          System.out.println(aniStub);
          StubArgumentDto argumentDto1 = aniStub.outputArguments.get(0);
@@ -84,8 +94,12 @@ public class StubInvokeListenerImpl implements StubInvokeListener {
          byte imgtype=(byte)argumentDto1.getValue();
          StubArgumentDto argumentDto2 = aniStub.outputArguments.get(1);
          Byte[] imgBytes=(Byte[]) argumentDto2.getValue();
-         System.out.println(imgBytes.length+"@@@@@@@@@@@@@@@");
+         synchronized(SunnyConstants.bytes){
+             SunnyConstants.bytes.notify();
+         }
+//         System.out.println(imgBytes.length+"@@@@@@@@@@@@@@@");
          byte[] imgb =new byte[imgBytes.length];
+         
          for (int i=0;i<imgBytes.length;i++){
              imgb[i]=(byte)imgBytes[i];
          }
@@ -174,7 +188,7 @@ public class StubInvokeListenerImpl implements StubInvokeListener {
               /* 接收服务器端响应的数据
                     */
 
-            DataOutputStream fileOut = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(new File("/home/anicloud/third/jpg"+imgName))));
+            DataOutputStream fileOut = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(new File("/home/anicloud/third/jpg/"+imgName))));
             // 1.创建数据报，用于接收服务器端响应的数据
             int i = 0;
             byte[] receiveByte=null;

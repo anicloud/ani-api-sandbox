@@ -91,30 +91,29 @@ public class StubInstanceController {
                     Thread thread = new Thread(portLisenter);
                     thread.start();
                 }
+
                 if (stubInstanceDto.groupId==13 && stubInstanceDto.stubId==311){
                         stubInstanceDto.inputList.get(2).value=IpAddress.getIpAddress();
                         PortTcpLisenter portLisenter=new PortTcpLisenter(Integer.parseInt(stubInstanceDto.inputList.get(3).value));
                         Thread thread = new Thread(portLisenter);
                         thread.start();
                 }
-                if (stubInstanceDto.groupId==512 && stubInstanceDto.stubId==3){
-                    String str=fileInfoService.readFromFile("/home/anicloud/sdp/local.sdp");
 
-                    stubInstanceDto.inputList.get(0).value=str;
+                Object result = stubInstanceService.invokeStubInstance(stubInstanceDto);
+
+                if (stubInstanceDto.groupId==13 && stubInstanceDto.stubId==301){
+                    System.out.println(result);
+                    ModelAndView message1=new ModelAndView("image");
+
+                    message1.addObject("values",result);
+                    return message1;
 
                 }
-                boolean result = stubInstanceService.invokeStubInstance(stubInstanceDto);
+                ModelAndView message1=new ModelAndView("argument");
+                message1.addObject("values",result);
+                return message1;
 
-                if(result){
-                    message.addObject("masters",deviceFormDtos);
 
-                }else {
-                    DeviceFormDto deviceFormDto=new DeviceFormDto();
-                    deviceFormDto.setName("执行失败");
-                    List<DeviceFormDto> stubDtos1=new ArrayList<>();
-                    stubDtos1.add(deviceFormDto);
-                    message.addObject("masters",stubDtos1);
-                }
             }
 
         }catch (Exception e){

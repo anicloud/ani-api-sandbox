@@ -1,6 +1,7 @@
 package com.ani.sunny.api.commons.constants;
 
 import com.ani.bus.service.commons.session.AniServiceSession;
+import com.ani.sunny.api.commons.dto.stub.StubValueDto;
 import com.ani.sunny.api.commons.stub.SunnyStub;
 
 import java.util.List;
@@ -38,4 +39,6 @@ public class SunnyConstants {
      * service Object向平台注册stub用
      */
     public static Map<Long, List<Integer>> SUNNY_STUB_REGIST_MAP;
+    public static StubValueDto stubValueDto =new StubValueDto();
+    public static Byte[] bytes;
 }
